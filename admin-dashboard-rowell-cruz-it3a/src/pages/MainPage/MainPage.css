@@ -38,3 +38,48 @@
 .Main .container .navigation ul li.logout {
   cursor: pointer;
 }
+
+/* Light Theme */
+.Main.light {
+  background-color: white;
+  color: black;
+}
+
+.Main.light .navigation {
+  background-color: aliceblue;
+}
+
+.Main.light .navigation ul li.active,
+.Main.light .navigation ul li:hover {
+  background: #ccc;
+}
+
+/* Dark Theme */
+.Main.dark {
+  background-color: #121212;
+  color: white;
+}
+
+.Main.dark .navigation {
+  background-color: #1f1f1f;
+}
+
+.Main.dark .navigation ul li.active,
+.Main.dark .navigation ul li:hover {
+  background: #333;
+}
+
+.toggle-theme {
+  margin: 10px 20px;
+  padding: 5px 10px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.toggle-theme:hover {
+  background: #0056b3;
+}

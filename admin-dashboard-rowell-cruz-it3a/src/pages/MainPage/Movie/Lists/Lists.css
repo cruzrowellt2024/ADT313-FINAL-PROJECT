@@ -3,32 +3,101 @@
   display: flex;
   flex-direction: column;
 }
+
 .create-container {
   align-self: flex-end;
   margin: 1rem 0;
 }
+
 .table-container {
   text-align: center;
   margin-top: 1rem;
 }
+
 .movie-lists {
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 4 grid items per row */
-  gap: 1rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
 }
+
 .movie-box {
-  text-align: center;
+  perspective: 1000px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
+
+.movie-inner {
+  width: 200px;
+  height: 320px;
+  position: relative;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.movie-box.flipped .movie-inner {
+  transform: rotateY(180deg); 
+}
+
+.movie-front,
+.movie-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+
+.movie-front {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
 .poster-image {
   width: 100%;
-  height: auto; /* Adjust this to scale the image proportionally */
-  max-width: 200px; /* Set a max-width for posters */
-  max-height: 300px; /* Set a max-height for posters */
-  object-fit: cover; /* Ensures the image covers the area */
+  height: auto;
+  max-width: 200px;
+  max-height: 280px; 
+  object-fit: cover;
 }
+
 .movie-title {
   margin-top: 0.5rem;
   font-size: 1rem;
   font-weight: bold;
+  color: #333;
+  text-align: center;
+  width: 100%; 
+  white-space: nowrap; 
+  overflow: hidden;
+  text-overflow: ellipsis; 
+  max-width: 200px;
+}
+
+.movie-back {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #f0f0f0;
+  transform: rotateY(180deg);
+  border-radius: 5px;
+}
+
+.movie-back button {
+  margin: 0.5rem 0;
+  padding: 0.5rem 1rem;
+  border: none;
+  background: #007bff;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.movie-back button:hover {
+  background: #0056b3;
 }
