@@ -1,0 +1,34 @@
+.lists-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.create-container {
+  align-self: flex-end;
+  margin: 1rem 0;
+}
+.table-container {
+  text-align: center;
+  margin-top: 1rem;
+}
+.movie-lists {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 grid items per row */
+  gap: 1rem;
+}
+.movie-box {
+  text-align: center;
+}
+.poster-image {
+  width: 100%;
+  height: auto; /* Adjust this to scale the image proportionally */
+  max-width: 200px; /* Set a max-width for posters */
+  max-height: 300px; /* Set a max-height for posters */
+  object-fit: cover; /* Ensures the image covers the area */
+}
+.movie-title {
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+}

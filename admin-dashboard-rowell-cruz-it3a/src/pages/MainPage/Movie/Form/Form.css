@@ -1,0 +1,42 @@
+/* Form.css */
+.movie-layout {
+  display: flex;
+  align-items: flex-start;
+}
+
+.poster-container {
+  flex: 1;
+  padding: 20px;
+}
+
+.poster-image {
+  width: 100%;
+  max-width: 300px;
+  border-radius: 8px;
+}
+
+.movie-details {
+  flex: 2;
+  padding: 20px;
+}
+
+.field {
+  margin-bottom: 10px;
+}
+
+.error {
+  color: red;
+  font-size: 12px;
+}
+
+.search-container {
+  padding: 20px;
+}
+
+.searched-movie {
+  padding-top: 10px;
+}
+
+.searched-movie p {
+  cursor: pointer;
+}
