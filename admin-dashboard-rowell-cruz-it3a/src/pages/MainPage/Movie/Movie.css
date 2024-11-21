@@ -1,0 +1,21 @@
+.movie-header {
+    display: flex;
+    justify-content: space-between; /* Pushes the button to the right */
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .toggle-theme {
+    padding: 5px 10px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .toggle-theme:hover {
+    background: #0056b3;
+  }
+  

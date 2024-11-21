@@ -9,6 +9,9 @@ import MainPage from './pages/MainPage/MainPage';
 import Movie from './pages/MainPage/Movie/Movie';
 import Lists from './pages/MainPage/Movie/Lists/Lists';
 import Form from './pages/MainPage/Movie/Form/Form';
+import CastAndCrews from './pages/MainPage/Movie/CastAndCrews/CastAndCrews'; 
+import Images from './pages/MainPage/Movie/Images/Images'; 
+import Videos from './pages/MainPage/Movie/Videos/Videos';  
 
 const router = createBrowserRouter([
   {
@@ -36,30 +39,16 @@ const router = createBrowserRouter([
             element: <Form />,
             children: [
               {
-                path: '/main/movies/form/:movieId',
-                element: (
-                  <h1>Change this for cast & crew CRUD functionality.</h1>
-                ),
-              },
-              {
                 path: '/main/movies/form/:movieId/cast-and-crews',
-                element: (
-                  <h1>
-                    Change this for cast & crew CRUD functionality component.
-                  </h1>
-                ),
+                element: <CastAndCrews />, 
               },
               {
-                path: '/main/movies/form/:movieId/photos',
-                element: (
-                  <h1>Change this for photos CRUD functionality component.</h1>
-                ),
+                path: '/main/movies/form/:movieId/images',
+                element: <Images />, 
               },
               {
                 path: '/main/movies/form/:movieId/videos',
-                element: (
-                  <h1>Change this for videos CRUD functionality component.</h1>
-                ),
+                element: <Videos />,
               },
             ],
           },

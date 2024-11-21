@@ -6,7 +6,7 @@ import './MainPage.css';
 function MainPage() {
   const accessToken = localStorage.getItem('accessToken');
   const navigate = useNavigate();
-  const { theme, toggleTheme } = useTheme();
+  const { theme } = useTheme();  // You no longer need toggleTheme here
 
   const handleLogout = () => {
     localStorage.removeItem('accessToken');
@@ -29,11 +29,6 @@ function MainPage() {
             </li>
             <li className="logout">
               <a onClick={handleLogout}>Logout</a>
-            </li>
-            <li>
-              <button onClick={toggleTheme} className="toggle-theme">
-                {theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
-              </button>
             </li>
           </ul>
         </div>
