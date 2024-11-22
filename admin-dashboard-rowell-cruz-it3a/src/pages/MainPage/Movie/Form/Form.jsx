@@ -72,25 +72,22 @@ const Form = () => {
       backdropPath: `https://image.tmdb.org/t/p/original/${selectedMovie.backdrop_path}`,
       posterPath: `https://image.tmdb.org/t/p/original/${selectedMovie.poster_path}`,
       isFeatured: 0,
-      cast: selectedMovie.casts,
-      videos: selectedMovie.videos,
-      photos: selectedMovie.photos,
     };
-
-    // Check if it's an update or new movie
+    
     const request = axios({
       method: movieId ? 'PATCH' : 'POST',
       url: movieId ? `/movies/${movieId}` : '/movies',
-      data: data,
+      data: data,  
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
     })
-      .then((saveResponse) => {
-        alert(movieId ? 'Movie updated successfully' : 'Movie added successfully');
+      .then(() => {
+        alert(movieId ? 'Movie and reviews updated successfully' : 'Movie and reviews added successfully');
         navigate('/main/movies');
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.log('Error saving movie and reviews:', error));
+    
   };
 
   // Fetch movie details if movieId exists (edit mode)
@@ -108,15 +105,14 @@ const Form = () => {
             poster_path: fetchedMovie.posterPath,
             release_date: fetchedMovie.releaseDate,
             vote_average: fetchedMovie.voteAverage,
-            casts: fetchedMovie.cast,
-            videos: fetchedMovie.videos,
-            photos: fetchedMovie.photos,
           };
           setSelectedMovie(tempData);
         })
         .catch((error) => console.error('Error fetching movie details:', error));
     }
   }, [movieId]);
+
+  
 
   return (
     <>
@@ -234,35 +230,35 @@ const Form = () => {
         </form>
       </div>
 
-      {/* Movie Details Tab Navigation */}
       {movieId && selectedMovie && (
         <div>
           <hr />
-          <nav>
-            <ul className='tabs'>
-              <li
-                onClick={() =>
-                  navigate(`/main/movies/form/${movieId}/cast-and-crews`)
-                }
-              >
-                Cast & Crews
-              </li>
-              <li
-                onClick={() =>
-                  navigate(`/main/movies/form/${movieId}/videos`)
-                }
-              >
-                Videos
-              </li>
-              <li
-                onClick={() =>
-                  navigate(`/main/movies/form/${movieId}/images`)
-                }
-              >
-                Images
-              </li>
-            </ul>
-          </nav>
+          <div className='tabs'>
+            <button
+              className='tab-btn'
+              onClick={() =>
+                navigate(`/main/movies/form/${movieId}/cast-and-crews`)
+              }
+            >
+              Cast & Crews
+            </button>
+            <button
+              className='tab-btn'
+              onClick={() =>
+                navigate(`/main/movies/form/${movieId}/videos`)
+              }
+            >
+              Videos
+            </button>
+            <button
+              className='tab-btn'
+              onClick={() =>
+                navigate(`/main/movies/form/${movieId}/images`)
+              }
+            >
+              Photos
+            </button>
+          </div>
           <Outlet />
         </div>
       )}

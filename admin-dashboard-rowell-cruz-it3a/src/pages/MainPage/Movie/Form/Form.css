@@ -1,6 +1,7 @@
 .movie-layout {
   display: flex;
   align-items: flex-start;
+  flex-wrap: wrap; /* Allow items to wrap for responsiveness */
 }
 
 .poster-container {
@@ -17,10 +18,28 @@
 .movie-details {
   flex: 2;
   padding: 20px;
+  display: flex;
+  flex-direction: column; /* Stack fields vertically */
 }
 
 .field {
-  margin-bottom: 10px;
+  margin-bottom: 15px; /* Space between fields */
+  display: flex;
+  flex-direction: column; /* Stack label and input vertically */
+}
+
+.field label {
+  font-weight: bold;
+  margin-bottom: 5px; /* Space between label and input */
+}
+
+.field input,
+.field textarea {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
 }
 
 .error {
@@ -38,4 +57,28 @@
 
 .searched-movie p {
   cursor: pointer;
+}
+
+.tabs {
+  display: flex;
+  gap: 10px;
+  justify-content: center; 
+}
+
+.tab-btn {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.tab-btn:hover {
+  background-color: #0056b3;
+}
+
+.tab-btn:active {
+  background-color: #004085;
 }
