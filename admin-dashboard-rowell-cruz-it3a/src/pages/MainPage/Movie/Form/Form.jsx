@@ -237,7 +237,7 @@ const Form = () => {
             <button
               className='tab-btn'
               onClick={() =>
-                navigate(`/main/movies/form/${movieId}/cast-and-crews`)
+                navigate(`/main/movies/form/${selectedMovie?.id}/cast-and-crews`)
               }
             >
               Cast & Crews
@@ -245,7 +245,7 @@ const Form = () => {
             <button
               className='tab-btn'
               onClick={() =>
-                navigate(`/main/movies/form/${movieId}/videos`)
+                navigate(`/main/movies/form/${selectedMovie?.id}/videos`)
               }
             >
               Videos
@@ -253,10 +253,10 @@ const Form = () => {
             <button
               className='tab-btn'
               onClick={() =>
-                navigate(`/main/movies/form/${movieId}/images`)
+                navigate(`/main/movies/form/${selectedMovie?.id}/images`)
               }
             >
-              Photos
+              Images
             </button>
           </div>
           <Outlet />

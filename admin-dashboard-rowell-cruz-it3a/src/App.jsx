@@ -27,27 +27,27 @@ const router = createBrowserRouter([
     element: <MainPage />,
     children: [
       {
-        path: '/main/movies',
+        path: 'movies',
         element: <Movie />,
         children: [
           {
-            path: '/main/movies',
+            path: '',
             element: <Lists />,
           },
           {
-            path: '/main/movies/form/:movieId?',
+            path: 'form/:movieId?',
             element: <Form />,
             children: [
               {
-                path: '/main/movies/form/:movieId/cast-and-crews',
-                element: <CastAndCrews />, 
+                path: 'cast-and-crews',
+                element: <CastAndCrews />,
               },
               {
-                path: '/main/movies/form/:movieId/images',
-                element: <Images />, 
+                path: 'images',
+                element: <Images />,
               },
               {
-                path: '/main/movies/form/:movieId/videos',
+                path: 'videos',
                 element: <Videos />,
               },
             ],
