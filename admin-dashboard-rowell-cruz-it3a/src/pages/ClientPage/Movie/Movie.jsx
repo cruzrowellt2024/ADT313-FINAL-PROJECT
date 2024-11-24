@@ -1,12 +1,9 @@
 import { Outlet } from 'react-router-dom';
 
 const Movie = () => {
-
   return (
     <>
-      <div className="movie-header">
-        <h1>Movies</h1>
-      </div>
+      <h1>Movie Page</h1>
       <Outlet />
     </>
   );

@@ -1,10 +1,11 @@
-import { useState, useRef, useCallback, useEffect } from 'react';
-import './LoginPage.css';
+import { useState, useRef, useCallback, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDebounce } from '../../../utils/hooks/useDebounce';
 import axios from 'axios';
+import { useUserContext } from '../../../context/UserContext';
 
 function Login() {
+  const { setRole } = useUserContext();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isFieldsDirty, setIsFieldsDirty] = useState(false);
@@ -16,6 +17,7 @@ function Login() {
   const [status, setStatus] = useState('idle');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const [result, setResult] = useState();
 
   const handleShowPassword = useCallback(() => {
     setIsShowPassword((value) => !value);
@@ -42,7 +44,7 @@ function Login() {
   const handleLogin = async () => {
     const data = { email, password };
     setStatus('loading');
-
+  
     await axios({
       method: 'post',
       url: '/admin/login',
@@ -50,19 +52,32 @@ function Login() {
       headers: { 'Access-Control-Allow-Origin': '*' },
     })
       .then((res) => {
-        console.log(res);
-        //store response access token to localstorage
+        console.log('Response:', res);
+        const role = res.data.user?.role; 
         localStorage.setItem('accessToken', res.data.access_token);
-        navigate('/main/movies');
+  
+        if (role) {
+          setRole(role);
+          if (role === 'admin') {
+            navigate('/main/movies');
+          } else {
+            navigate('/home');
+          }
+        } else {
+          console.error('Role is missing in the response');
+        }
+        setResult(res);
         setStatus('idle');
+        console.log('Token:', localStorage.getItem('authToken'));
+
       })
       .catch((e) => {
-        setError(e.response.data.message);
+        setError(e.response?.data?.message || 'An error occurred');
         console.log(e);
         setStatus('idle');
-        // alert(e.response.data.message);
       });
   };
+  
 
   useEffect(() => {
     setDebounceState(true);
@@ -115,10 +130,7 @@ function Login() {
                     return;
                   }
                   if (email && password) {
-                    handleLogin({
-                      type: 'login',
-                      user: { email, password },
-                    });
+                    handleLogin();
                   } else {
                     setIsFieldsDirty(true);
                     if (email == '') {

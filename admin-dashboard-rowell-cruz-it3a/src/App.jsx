@@ -2,7 +2,7 @@ import './App.css';
 import * as React from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './index.css';
-import { ThemeProvider } from './pages/MainPage/ThemeContext';
+import { UserProvider } from './context/UserContext';
 import LoginPage from './pages/Public/LoginPage/LoginPage';
 import RegisterPage from './pages/Public/RegisterPage/RegisterPage';
 import MainPage from './pages/MainPage/MainPage';
@@ -12,6 +12,8 @@ import Form from './pages/MainPage/Movie/Form/Form';
 import CastAndCrews from './pages/MainPage/Movie/CastAndCrews/CastAndCrews'; 
 import Images from './pages/MainPage/Movie/Images/Images'; 
 import Videos from './pages/MainPage/Movie/Videos/Videos';  
+import ClientPage from './pages/ClientPage/ClientPage';  
+import Home from './pages/ClientPage/Home/Home';  
 
 const router = createBrowserRouter([
   {
@@ -20,6 +22,14 @@ const router = createBrowserRouter([
   },
   {
     path: '/register',
+    element: <RegisterPage />,
+  },
+  {
+    path: '/admin/login',
+    element: <LoginPage />,
+  },
+  {
+    path: '/admin/register',
     element: <RegisterPage />,
   },
   {
@@ -56,15 +66,27 @@ const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: '/home',
+    element: <ClientPage/>,
+    children: [
+        {
+          path: '',
+          element: <Home/>
+        },
+        {
+          path: 'movie/:movieId',
+          element: <Movie/>
+        }
+    ]
+  }
 ]);
 
 function App() {
   return (
-    <ThemeProvider>
-      <div className="App">
-        <RouterProvider router={router} />
-      </div>
-    </ThemeProvider>
+    <UserProvider>
+      <RouterProvider router={router} />
+    </UserProvider>
   );
 }
 
