@@ -1,21 +1,17 @@
 .movie-header {
     display: flex;
-    justify-content: space-between; /* Pushes the button to the right */
+    justify-content: space-between;
     align-items: center;
-    padding: 20px;
-  }
-  
-  .toggle-theme {
-    padding: 5px 10px;
-    background: #007bff;
+    padding-left: 3rem;
+    padding-right: 3rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+.movie-header h1 {
     color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.3s;
-  }
-  
-  .toggle-theme:hover {
-    background: #0056b3;
-  }
-  
+}
+
+body {
+    background-color: #444;
+}

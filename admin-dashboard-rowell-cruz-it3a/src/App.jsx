@@ -5,7 +5,8 @@ import './index.css';
 import { UserProvider } from './context/UserContext';
 import Login from './pages/Public/LoginPage/Login';
 import Register from './pages/Public/RegisterPage/Register';
-import MainPage from './pages/MainPage/MainPage';
+import Dashboard from './pages/MainPage/Dashboard/Dashboard';
+import MainPage from './pages/MainPage/Main';
 import Movie from './pages/MainPage/Movie/Movie';
 import Lists from './pages/MainPage/Movie/Lists/Lists';
 import Form from './pages/MainPage/Movie/Form/Form';
@@ -55,6 +56,10 @@ const router = createBrowserRouter([
             ],
           },
         ],
+      },
+      {
+        path: '/main/dashboard',
+        element: <Dashboard />,
       },
     ],
   },
