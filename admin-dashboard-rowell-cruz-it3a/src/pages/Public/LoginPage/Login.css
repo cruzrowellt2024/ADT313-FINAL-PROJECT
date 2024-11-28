@@ -36,7 +36,7 @@ width: 100%;
 max-width: 400px;
 }
 
-.login-form h3 {
+.login-form h2 {
 text-align: center;
 margin-bottom: 1.5rem;
 color: #fff;
@@ -116,5 +116,13 @@ text-decoration: none;
 
 .register-link a:hover {
 text-decoration: underline;
+}
+
+.input-error {
+    border: 2px solid red !important; 
+}
+
+input:focus.input-error {
+    outline: none;
 }
   

@@ -4,7 +4,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './index.css';
 import { UserProvider } from './context/UserContext';
 import Login from './pages/Public/LoginPage/Login';
-import RegisterPage from './pages/Public/RegisterPage/RegisterPage';
+import Register from './pages/Public/RegisterPage/Register';
 import MainPage from './pages/MainPage/MainPage';
 import Movie from './pages/MainPage/Movie/Movie';
 import Lists from './pages/MainPage/Movie/Lists/Lists';
@@ -22,7 +22,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/register',
-    element: <RegisterPage />,
+    element: <Register />,
   },
   {
     path: '/main',
