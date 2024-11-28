@@ -49,7 +49,7 @@ const router = createBrowserRouter([
             element: <Form />,
             children: [
               {
-                path: 'cast-and-crews',
+                path: 'cast',
                 element: <CastAndCrews />,
               },
               {
@@ -85,7 +85,9 @@ const router = createBrowserRouter([
 function App() {
   return (
     <UserProvider>
-      <RouterProvider router={router} />
+      <div className='App'>
+        <RouterProvider router={router} />
+      </div>
     </UserProvider>
   );
 }

@@ -4,7 +4,7 @@ import axios from "axios";
 import "./CastAndCrews.css";
 
 const TMDB_API_KEY = "497329e67f904395b79592a3c245314b";
-const TMDB_IMAGE_URL = "https://image.tmdb.org/t/p/w200";
+const TMDB_IMAGE_URL = "https://image.tmdb.org/t/p/w200"; // URL for fetching images
 
 const CastAndCrews = () => {
   const { movieId } = useParams();

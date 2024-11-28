@@ -193,6 +193,21 @@ const Form = () => {
               </div>
 
               <div className='field'>
+                Popularity:
+                <input
+                  type='text'
+                  value={selectedMovie ? selectedMovie.popularity : ''}
+                  onChange={(e) =>
+                    setSelectedMovie({
+                      ...selectedMovie,
+                      popularity: e.target.value,
+                    })
+                  }
+                />
+                {errors.popularity && <p className='error'>{errors.popularity}</p>}
+              </div>
+
+              <div className='field'>
                 Release Date:
                 <input
                   type='text'
@@ -237,7 +252,7 @@ const Form = () => {
             <button
               className='tab-btn'
               onClick={() =>
-                navigate(`/main/movies/form/${selectedMovie?.id}/cast-and-crews`)
+                navigate(`/main/movies/form/${selectedMovie?.id}/cast`)
               }
             >
               Cast & Crews

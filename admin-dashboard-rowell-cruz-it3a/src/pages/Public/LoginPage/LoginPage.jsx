@@ -68,7 +68,7 @@ function Login() {
         }
         setResult(res);
         setStatus('idle');
-        console.log('Token:', localStorage.getItem('authToken'));
+        console.log('Token:', localStorage.getItem('accessToken'));
 
       })
       .catch((e) => {
