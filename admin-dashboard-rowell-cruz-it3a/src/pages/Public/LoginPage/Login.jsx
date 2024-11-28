@@ -84,24 +84,23 @@ const Login = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        setIsFieldsDirty(true);  // Mark the fields as dirty to trigger validation logic
+        setIsFieldsDirty(true); 
 
         if (email === '') {
-            emailRef.current.focus();  // Focus on email field if empty
+            emailRef.current.focus(); 
         } else if (password === '') {
-            passwordRef.current.focus();  // Focus on password field if empty
+            passwordRef.current.focus();  
         } else {
-            handleLogin();  // Proceed to login if all fields are filled
+            handleLogin(); 
         }
     };
 
-    // Function to apply the 'error' class when the field is empty and focused
     const getInputClass = (field) => {
         if (isFieldsDirty) {
             if (field === 'email' && email === '') {
-                return 'input-error';  // Red border for email
+                return 'input-error'; 
             } else if (field === 'password' && password === '') {
-                return 'input-error';  // Red border for password
+                return 'input-error'; 
             }
         }
         return '';
@@ -124,7 +123,7 @@ const Login = () => {
                             id="email"
                             placeholder="Enter your email"
                             onChange={(e) => handleOnChange(e, 'email')}
-                            className={getInputClass('email')}  // Apply red border class if empty
+                            className={getInputClass('email')} 
                         />
                     </div>
                     <div className="form-group">
@@ -137,7 +136,7 @@ const Login = () => {
                                 name='password'
                                 ref={passwordRef}
                                 onChange={(e) => handleOnChange(e, 'password')}
-                                className={getInputClass('password')}  // Apply red border class if empty
+                                className={getInputClass('password')} 
                             />
                             <button
                                 type="button"

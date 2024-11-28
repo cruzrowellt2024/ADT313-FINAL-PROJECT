@@ -80,7 +80,7 @@ padding: 0.75rem;
 border: 1px solid #ccc;
 border-left: none;
 background-color: gold;
-color: #fff;
+color: #000000;
 cursor: pointer;
 border-radius: 0 5px 5px 0;
 }
@@ -93,7 +93,7 @@ background-color: gold;
 width: 100%;
 padding: 0.75rem;
 background-color: gold;
-color: #fff;
+color: #000000;
 border: none;
 border-radius: 5px;
 cursor: pointer;

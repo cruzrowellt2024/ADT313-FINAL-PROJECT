@@ -7,7 +7,6 @@ const Lists = () => {
   const accessToken = localStorage.getItem('accessToken');
   const navigate = useNavigate();
   const [lists, setLists] = useState([]);
-  const [flipped, setFlipped] = useState({});
 
   const getMovies = () => {
     axios.get('/movies').then((response) => {
@@ -29,69 +28,60 @@ const Lists = () => {
           },
         })
         .then(() => {
-          const tempLists = lists.filter((movie) => movie.id !== id);
-          setLists(tempLists);
+          const tempLists = [...lists];
+          const index = lists.findIndex((movie) => movie.id === id);
+          if (index !== undefined || index !== -1) {
+            tempLists.splice(index, 1);
+            setLists(tempLists);
+          }
         });
     }
   };
 
-  const toggleFlip = (id) => {
-    setFlipped((prev) => ({
-      ...prev,
-      [id]: !prev[id],
-    }));
-  };
-
   return (
-    <div className="lists-container">
-      <div className="create-container">
-        <button type="button" onClick={() => navigate('/main/movies/form')}>
-          Create new
+    <div className='lists-container'>
+      <div className='create-container'>
+        <button
+          type='button'
+          className='create-button'
+          onClick={() => {
+            navigate('/main/movies/form');
+          }}
+        >
+          Create New
         </button>
       </div>
-      <div className="table-container">
-        <div className="movie-lists">
-          {lists.map((movie) => (
-            <div
-              className={`movie-box ${flipped[movie.id] ? 'flipped' : ''}`}
-              key={movie.id}
-              onClick={() => toggleFlip(movie.id)}
-            >
-              <div className="movie-inner">
-                {/* Front side (Poster and Title) */}
-                <div className="movie-front">
-                  <img
-                    className="poster-image"
-                    src={movie.posterPath || 'https://via.placeholder.com/200x300'}
-                    alt={movie.title}
-                  />
-                  <div className="movie-title">{movie.title}</div>
-                </div>
-                {/* Back side (Buttons) */}
-                <div className="movie-back">
+      <div className='table-container'>
+        <table className='movie-lists'>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Title</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {lists.map((movie) => (
+              <tr>
+                <td>{movie.id}</td>
+                <td>{movie.title}</td>
+                <td>
                   <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
+                    type='button' className='edit-button'
+                    onClick={() => {
                       navigate('/main/movies/form/' + movie.id);
                     }}
                   >
                     Edit
                   </button>
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation(); 
-                      handleDelete(movie.id);
-                    }}
-                  >
+                  <button type='button' className='delete-button' onClick={() => handleDelete(movie.id)}>
                     Delete
                   </button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );
