@@ -3,7 +3,7 @@ import * as React from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './index.css';
 import { UserProvider } from './context/UserContext';
-import LoginPage from './pages/Public/LoginPage/LoginPage';
+import Login from './pages/Public/LoginPage/Login';
 import RegisterPage from './pages/Public/RegisterPage/RegisterPage';
 import MainPage from './pages/MainPage/MainPage';
 import Movie from './pages/MainPage/Movie/Movie';
@@ -18,18 +18,10 @@ import Home from './pages/ClientPage/Home/Home';
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <LoginPage />,
+    element: <Login />,
   },
   {
     path: '/register',
-    element: <RegisterPage />,
-  },
-  {
-    path: '/admin/login',
-    element: <LoginPage />,
-  },
-  {
-    path: '/admin/register',
     element: <RegisterPage />,
   },
   {
