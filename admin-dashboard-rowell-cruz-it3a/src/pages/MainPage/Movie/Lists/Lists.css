@@ -8,43 +8,34 @@
   font-family: 'Roboto', sans-serif;
 }
 
-.create-container {
-  align-self: flex-end;
-  padding-right: 5rem;
-  margin: 1rem 0;
-}
-
-.create-button {
-  width: 100%;
-  padding-left : 2rem;
-  padding-right : 2rem;
-  padding-top : 1rem;
-  padding-bottom : 1rem;
-  background-color: gold;
-  color: #000000;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-}
-
 .edit-button {
-  width: 25%;
-  padding: 0.5rem;
+  width: 40%;
+  padding: 0.75rem;
   margin: 0.25rem;
-  background-color: grey;
+  background-color: rgb(50, 50, 150);
   color: white;
-  border: none;
-  border-radius: 5px;
+  border: 1px solid rgb(50, 50, 150);
+  border-radius: 50px;
+  box-shadow: inset 0 0 0 2px rgb(30, 30, 100); 
+}
+
+.edit-button:hover {
+  background-color: rgb(73, 73, 211);
 }
 
 .delete-button {
-  width: 25%;
-  padding: 0.5rem;
+  width: 40%;
+  padding: 0.75rem;
   margin: 0.25rem;
   background-color: rgb(165, 0, 0);
-  color: white;
-  border: none;
-  border-radius: 5px;
+  color: rgb(255, 255, 255);
+  border: 1px solid rgb(165, 0, 0);
+  border-radius: 50px;
+  box-shadow: inset 0 0 0 2px rgb(105, 0, 0);
+}
+
+.delete-button:hover {
+  background-color: rgb(231, 0, 0);
 }
 
 .table-container {
@@ -68,11 +59,12 @@
   padding: 25px;
   text-align: center;
   background-color: #6d6d6d;
-  box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 4px 2px -2px rgb(0, 0, 0, 0.5);
 }
 
 .movie-lists td {
   padding: 10px;
   text-align: center;
+  background: linear-gradient(0deg, #505050, #4A4A4A);
   border-bottom: 1px solid #313131;
 }

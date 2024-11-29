@@ -106,7 +106,7 @@ function RegisterPage() {
           <h1>The Movie DB</h1>
         </div>
         <form>
-          <div className='form-container'>
+          <div className='register-form-container'>
           <h2>Register</h2>
             <div>
             <div>

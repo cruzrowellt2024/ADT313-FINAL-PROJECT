@@ -1,8 +1,9 @@
 import './App.css';
+import './index.css';
 import * as React from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import './index.css';
 import { UserProvider } from './context/UserContext';
+import { ButtonProvider } from './context/ButtonContext';
 import Login from './pages/Public/LoginPage/Login';
 import Register from './pages/Public/RegisterPage/Register';
 import Dashboard from './pages/MainPage/Dashboard/Dashboard';
@@ -82,9 +83,11 @@ const router = createBrowserRouter([
 function App() {
   return (
     <UserProvider>
-      <div className='App'>
-        <RouterProvider router={router} />
-      </div>
+      <ButtonProvider>
+        <div className="App">
+          <RouterProvider router={router} />
+        </div>
+      </ButtonProvider>
     </UserProvider>
   );
 }
