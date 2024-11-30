@@ -1,6 +1,113 @@
-.actor-image {
-  width: 50px;
-  height: 75px;
-  border-radius: 4px;
-  margin-right: 10px;
+.cast-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px;
 }
+
+.cast-container h1 {
+  color: white;
+}
+
+.scrollable-cast-list {
+  overflow-x: auto;
+  white-space: nowrap;
+  padding-bottom: 10px;
+}
+
+.scrollable-cast-list ul {
+  display: flex;
+  gap: 15px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.cast-list {
+  max-width: 50%;
+  flex: 3;
+  overflow-x: auto;
+  white-space: nowrap;
+  padding-bottom: 10px;  
+  display: block;
+}
+
+.cast-list ul {
+  display: flex;
+  gap: 15px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.actor-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  min-width: 150px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  height: 250px; 
+  overflow: hidden; 
+}
+
+.actor-image {
+  width: 100px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.actor-item strong,
+.actor-item p {
+  margin-top: 10px;
+  font-size: 14px;
+  white-space: nowrap; 
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.actor-item p {
+  margin-top: 5px;
+  font-size: 10px; 
+  white-space: nowrap; 
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cast-form {
+  flex: 1;
+  padding: 2rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fdfdfd;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.cast-form label {
+  display: block; 
+  margin-bottom: 10px; 
+}
+
+.cast-form input {
+  display: block;
+  width: 95%; 
+  padding: 8px 10px 8px 10px; 
+  margin-top: 5px;
+}
+
+.cast-form button {
+  margin-top: 15px;
+}
+
+.error {
+  color: red;
+  font-weight: bold;
+}
+

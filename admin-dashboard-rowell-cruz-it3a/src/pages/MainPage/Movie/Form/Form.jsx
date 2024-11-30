@@ -262,7 +262,7 @@ const Form = () => {
             <button
               className='tab-btn'
               onClick={() =>
-                navigate(`/main/movies/form/${selectedMovie?.id}/cast`)
+                navigate(`/main/movies/form/${movieId}/cast`)
               }
             >
               Cast & Crews
@@ -270,7 +270,7 @@ const Form = () => {
             <button
               className='tab-btn'
               onClick={() =>
-                navigate(`/main/movies/form/${selectedMovie?.id}/videos`)
+                navigate(`/main/movies/form/${movieId}/videos`)
               }
             >
               Videos
@@ -278,7 +278,7 @@ const Form = () => {
             <button
               className='tab-btn'
               onClick={() =>
-                navigate(`/main/movies/form/${selectedMovie?.id}/images`)
+                navigate(`/main/movies/form/${movieId}/images`)
               }
             >
               Images
