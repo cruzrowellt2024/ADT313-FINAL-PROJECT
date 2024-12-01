@@ -1,0 +1,85 @@
+.video-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 20px;
+  }
+  
+  .video-container h1 {
+    color: white;
+  }
+  
+  .video-table-container {
+    flex: 3;
+    overflow-y: auto;
+    padding-bottom: 10px;
+  }
+  
+  .video-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .video-table th,
+  .video-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .video-table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+  }
+  
+  .video-item {
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .video-item:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .video-form {
+    flex: 1;
+    padding: 2rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fdfdfd;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .video-form label {
+    display: block; 
+    margin-bottom: 10px; 
+  }
+  
+  .video-form input,
+  .video-form select {
+    display: block;
+    width: 95%; 
+    padding: 8px 10px; 
+    margin-top: 5px;
+  }
+  
+  .video-form button {
+    margin-top: 15px;
+  }
+  
+  .error {
+    color: red;
+    font-weight: bold;
+  }
+  
+  .save-button {
+    width: 150px;
+  }
+  
+  .delete-button {
+    border: none;
+    box-shadow: none;
+    width: 150px;
+  }
+  

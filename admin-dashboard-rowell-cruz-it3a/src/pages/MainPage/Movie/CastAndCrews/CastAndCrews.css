@@ -111,3 +111,12 @@
   font-weight: bold;
 }
 
+.save-button {
+  width: 150px;
+}
+
+.delete-button {
+  border: none;
+  box-shadow: none;
+  width: 150px;
+}
