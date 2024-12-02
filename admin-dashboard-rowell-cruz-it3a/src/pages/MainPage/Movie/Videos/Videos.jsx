@@ -18,9 +18,8 @@ const Videos = () => {
   const [official, setOfficial] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Initialize movieId and userId (Placeholders for now)
-  const userId = 123;  // Replace this with actual dynamic logic for user ID
-  const movieIdFromParam = movieId || 456;  // Replace this with actual dynamic logic for movie ID if needed
+  const userId = 2;
+  const movieIdFromParam = movieId;
 
   const fetchMovieVideos = async () => {
     setLoading(true);
@@ -29,16 +28,27 @@ const Videos = () => {
     try {
       const response = await axios.get(`/videos/${movieIdFromParam}`, {
         headers: {
+          "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
       setVideos(response.data || []);
     } catch (err) {
-      setError("Failed to fetch movie videos.");
+      setError(err.response?.data?.message || "Failed to fetch movie videos.");
     } finally {
       setLoading(false);
     }
   };
+
+  const resetForm = () => {
+    setUrl("");
+    setName("");
+    setSite("");
+    setVideoType("");
+    setVideoKey("");
+    setOfficial(0);
+    setSelectedVideo(null);
+  };  
 
   const generateEmbedUrl = (key) => {
     return `https://www.youtube.com/embed/${key}`;
@@ -46,57 +56,66 @@ const Videos = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const newVideo = {
+  
+    if (!url || !name || !site || !videoType || !videoKey) {
+      alert("All fields are required.");
+      return;
+    }
+  
+    const videoPayload = {
+      movieId: movieIdFromParam, // Ensure it's passed correctly here
+      userId,
       url,
       name,
       site,
       videoType,
       videoKey,
       official,
-      movieId: movieIdFromParam, // Use initialized movieId here
-      userId: userId,            // Use initialized userId here
     };
-
+  
     try {
       setIsSubmitting(true);
+  
       if (selectedVideo) {
-        await axios.patch(`/videos/${selectedVideo.id}`, newVideo, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        });
+        // PATCH request for updating video
+        const response = await axios.patch(
+          `/admin/videos/${selectedVideo.id}`,
+          videoPayload,  // Directly pass videoPayload to match backend expectations
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+          }
+        );
+        console.log("Update response:", response.data);
         alert("Video updated successfully.");
       } else {
-        await axios.post("/videos", newVideo, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        });
-        alert("New video added.");
+        // POST request for creating a new video
+        const response = await axios.post(
+          "/videos",
+          videoPayload,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+          }
+        );
+        console.log("Create response:", response.data);
+        alert("New video added successfully.");
       }
-
-      // Refetch the video list after success
-      fetchMovieVideos();
-
-      // Reset form fields and switch to Add mode
-      setUrl("");
-      setName("");
-      setSite("");
-      setVideoType("");
-      setVideoKey("");
-      setOfficial(0);
-      setSelectedVideo(null);
+  
+      fetchMovieVideos(); // Refresh the video list
+      resetForm();
     } catch (error) {
-      console.error("Error details:", error);
+      console.error("Error details:", error.response || error.message);
       alert("An error occurred while saving the video.");
     } finally {
       setIsSubmitting(false);
     }
   };
-
+  
   const handleEdit = (video) => {
     setSelectedVideo(video);
     setUrl(video.url);
@@ -110,21 +129,15 @@ const Videos = () => {
   const handleDelete = async () => {
     if (selectedVideo) {
       try {
-        await axios.delete(`/videos/${selectedVideo.id}`, {
+        await axios.delete(`/admin/videos/${selectedVideo.id}`, {
           headers: {
+            "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
         });
-
         alert("Video deleted successfully.");
-        fetchMovieVideos(); // Refetch the video list after deletion
-        setSelectedVideo(null); // Clear selected video
-        setUrl("");
-        setName("");
-        setSite("");
-        setVideoType("");
-        setVideoKey("");
-        setOfficial(0);
+        fetchMovieVideos();
+        resetForm();
       } catch (error) {
         console.error("Error details:", error);
         alert("An error occurred while deleting the video.");
@@ -132,7 +145,6 @@ const Videos = () => {
     }
   };
 
-  // Update the embedded URL whenever videoKey changes
   useEffect(() => {
     if (videoKey) {
       setUrl(generateEmbedUrl(videoKey));
@@ -232,12 +244,12 @@ const Videos = () => {
               <option value={1}>Yes</option>
             </select>
           </label>
-          <button type="submit" className="save-button">
+          <button type="submit" className="save-button" disabled={isSubmitting}>
             {selectedVideo ? "Save" : "Add Video"}
           </button>
         </form>
         {selectedVideo && (
-          <button onClick={handleDelete} className="delete-button">
+          <button onClick={handleDelete} className="delete-button" disabled={isSubmitting}>
             Delete Video
           </button>
         )}

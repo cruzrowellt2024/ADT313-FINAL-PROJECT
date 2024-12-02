@@ -223,7 +223,7 @@ const CastAndCrews = () => {
           {selectedActor && (
             <button
               type="button"
-              className="delete-button"
+              className="delete-cast-button"
               onClick={handleDelete}
               disabled={isSubmitting}
             >

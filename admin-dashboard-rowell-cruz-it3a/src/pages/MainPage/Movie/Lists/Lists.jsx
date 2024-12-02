@@ -70,7 +70,7 @@ const Lists = () => {
                   </button>
                   <button
                     type="button"
-                    className="delete-button"
+                    className="delete-movie-button"
                     onClick={() => handleDelete(movie.id)}
                   >
                     Delete
