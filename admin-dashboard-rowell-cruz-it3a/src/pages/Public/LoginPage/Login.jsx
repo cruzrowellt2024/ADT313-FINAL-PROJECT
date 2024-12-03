@@ -6,7 +6,7 @@ import { useUserContext } from '../../../context/UserContext';
 import './Login.css';
 
 const Login = () => {
-    const { setRole } = useUserContext();
+    const { setRole, setAccessToken, setUserInfo } = useUserContext();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isFieldsDirty, setIsFieldsDirty] = useState(false);
@@ -46,36 +46,38 @@ const Login = () => {
         const data = { email, password };
         setStatus('loading');
 
-        await axios({
-            method: 'post',
-            url: '/admin/login',
-            data,
-            headers: { 'Access-Control-Allow-Origin': '*' },
-        })
-            .then((res) => {
-                console.log('Response:', res);
-                const role = res.data.user?.role; 
-                localStorage.setItem('accessToken', res.data.access_token);
-
-                if (role) {
-                    setRole(role);
-                    if (role === 'admin') {
-                        navigate('/main/movies');
-                    } else {
-                        navigate('/home');
-                    }
-                } else {
-                    console.error('Role is missing in the response');
-                }
-                setResult(res);
-                setStatus('idle');
-                console.log('Token:', localStorage.getItem('accessToken'));
-            })
-            .catch((e) => {
-                setError(e.response?.data?.message || 'An error occurred');
-                console.log(e);
-                setStatus('idle');
+        try {
+            const res = await axios({
+                method: 'post',
+                url: '/admin/login',
+                data,
+                headers: { 'Access-Control-Allow-Origin': '*' },
             });
+
+            const { access_token, user } = res.data;
+            if (access_token && user) {
+                setAccessToken(access_token);
+                setRole(user.role);
+                setUserInfo(user);
+
+                localStorage.setItem('accessToken', access_token);
+
+                if (user.role === 'admin') {
+                    navigate('/main/movies');
+                } else {
+                    navigate('/home');
+                }
+            } else {
+                console.error('Invalid login response');
+            }
+
+            setResult(res);
+            setStatus('idle');
+        } catch (e) {
+            setError(e.response?.data?.message || 'An error occurred');
+            console.log(e);
+            setStatus('idle');
+        }
     };
 
     useEffect(() => {
@@ -155,6 +157,7 @@ const Login = () => {
                         {status === 'idle' ? 'Login' : 'Loading'}
                     </button>
                 </form>
+                {error && <p className="error-message">{error}</p>}
                 <p className="register-link">
                     Don't have an account? <a href="/register">Register here</a>
                 </p>

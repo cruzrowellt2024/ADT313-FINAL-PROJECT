@@ -12,7 +12,6 @@ const Form = () => {
   const navigate = useNavigate();
   let { movieId } = useParams();
 
-  // Search for movies (create mode)
   const handleSearch = useCallback(() => {
     if (selectedMovie) {
       setShowDropdown(true); 
@@ -42,11 +41,8 @@ const Form = () => {
 
   const handleSave = () => {
     const accessToken = localStorage.getItem('accessToken');
-
-    // Reset errors before validation
     setErrors({});
-
-    // Validate fields
+    
     const validationErrors = {};
 
     if (!selectedMovie?.original_title || selectedMovie.original_title.length < 1) {
@@ -67,7 +63,6 @@ const Form = () => {
       return;
     }
 
-    // Prepare the data for submission
     const data = {
       tmdbId: selectedMovie.id,
       title: selectedMovie.original_title,
@@ -96,7 +91,6 @@ const Form = () => {
     
   };
 
-  // Fetch movie details if movieId exists (edit mode)
   useEffect(() => {
     if (movieId) {
       axios
@@ -122,7 +116,6 @@ const Form = () => {
 
   return (
     <div className='main-form-container'>
-      {/* Movie Search Section (for Create Mode) */}
       {!movieId && (
         <>
           <div className='search-container'>
@@ -138,7 +131,6 @@ const Form = () => {
               Search
             </button>
 
-            {/* Movie List as Dropdown */}
             {query && searchedMovieList.length > 0 && showDropdown && (
               <ul className='dropdown-list'>
                 {searchedMovieList.map((movie) => (
@@ -156,12 +148,10 @@ const Form = () => {
         </>
       )}
 
-      {/* Form for Movie Details */}
       <div className='whole-form-container'>
         <div className="form-container">
           <form>
             <div className="movie-layout">
-              {/* Left side: Poster Image */}
               <div className="poster-container">
                 {selectedMovie && (
                   <img
@@ -172,7 +162,6 @@ const Form = () => {
                 )}
               </div>
 
-              {/* Right side: Movie Details */}
               <div className="movie-details">
                 <div className="field">
                   Title:

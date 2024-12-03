@@ -1,128 +1,171 @@
-.cast-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  gap: 20px;
-  padding: 20px;
+.cast-and-crews {
+  margin: 20px;
 }
 
-.cast-container h1 {
+.cast-and-crews h1 {
   color: white;
 }
 
-.scrollable-cast-list {
+.horizontal-container {
+  display: flex;
+  gap: 20px;
+}
+
+.cast-list-container {
+  flex: 1.5;
+  border-radius: 5px;
+  padding: 20px;
   overflow-x: auto;
-  white-space: nowrap;
-  padding-bottom: 10px;
 }
 
-.scrollable-cast-list ul {
-  display: flex;
-  gap: 15px;
-  padding: 0;
-  margin: 0;
-  list-style: none;
+.cast-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  color: white;
 }
 
-.cast-list {
-  max-width: 50%;
-  flex: 3;
-  overflow-x: auto;
-  white-space: nowrap;
-  padding-bottom: 10px;  
-  display: block;
+.cast-table th,
+.cast-table td {
+  padding: 8px;
+  text-align: left;
 }
 
-.cast-list ul {
-  display: flex;
-  gap: 15px;
-  padding: 0;
-  margin: 0;
-  list-style: none;
-}
-
-.actor-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+.cast-table th {
+  padding: 25px;
   text-align: center;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background-color: #f9f9f9;
-  min-width: 150px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  height: 250px; 
-  overflow: hidden; 
-}
-
-.actor-image {
-  width: 100px;
-  height: 150px;
-  object-fit: cover;
-  border-radius: 4px;
-}
-
-.actor-item strong,
-.actor-item p {
-  margin-top: 10px;
-  font-size: 14px;
-  white-space: nowrap; 
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.actor-item p {
-  margin-top: 5px;
-  font-size: 10px; 
-  white-space: nowrap; 
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.cast-form {
-  flex: 1;
-  padding: 2rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background-color: #fdfdfd;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.cast-form label {
-  display: block; 
-  margin-bottom: 10px; 
-}
-
-.cast-form input {
-  display: block;
-  width: 95%; 
-  padding: 8px 10px 8px 10px; 
-  margin-top: 5px;
-}
-
-.cast-form button {
-  margin-top: 15px;
-}
-
-.error {
-  color: red;
+  background-color: #6d6d6d;
+  box-shadow: 0px 4px 2px -2px rgb(0, 0, 0, 0.5);
   font-weight: bold;
 }
 
-.save-button {
-  width: 150px;
+.cast-table td {
+  padding: 25px;
+  text-align: center;
+  background-color: #6d6d6d;
+  background: linear-gradient(0deg, #505050, #4A4A4A);
+  border-bottom: 1px solid #313131;
+}
+
+.cast-table td button {
+  padding: 5px 10px;
+  margin: 2px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.edit-cast-button {
+  background-color: rgb(50, 50, 150);
+  color: white;
+  border: none;
+}
+
+.edit-cast-button:hover {
+  background-color: rgb(73, 73, 211);
 }
 
 .delete-cast-button {
-  width: 40%;
-  padding: 0.75rem;
-  margin: 0.25rem;
   background-color: rgb(165, 0, 0);
-  color: rgb(255, 255, 255);
-  border-radius: 50px;
+  color: white;
   border: none;
-  box-shadow: none;
-  width: 150px;
+}
+
+.delete-cast-button:hover {
+  background-color: rgb(231, 0, 0);
+}
+
+.cast-form-container {
+  flex: 1;
+  padding: 20px;
+  color: black;
+  border-radius: 10px;
+  background-color: white;
+}
+
+.cast-form-container h2 {
+  margin-bottom: 20px;
+}
+
+.search-container {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 20px; 
+}
+
+.search-bar {
+  flex-grow: 1;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.search-button {
+  padding: 8px 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.search-button:hover {
+  background-color: #0056b3;
+}
+
+.cast-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  color: black;
+  font-weight: bold;
+}
+
+.form-group input {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.image-preview-container {
+  margin-top: 15px;
+}
+
+.image-preview-container label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.image-preview {
+  max-width: 100%;
+  max-height: 150px;
+  border-radius: 5px;
+  margin-top: 5px;
+}
+
+.save-button {
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.save-button:hover {
+  background-color: #218838;
+}
+
+button {
+  margin-left: 10px;
 }

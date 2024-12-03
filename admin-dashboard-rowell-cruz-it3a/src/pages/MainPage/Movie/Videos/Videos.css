@@ -1,81 +1,215 @@
 .video-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    gap: 20px;
-    padding: 20px;
-  }
-  
-  .video-container h1 {
-    color: white;
-  }
-  
-  .video-table-container {
-    flex: 1;
-    overflow-y: auto;
-    padding-bottom: 10px;
-  }
-  
-  .video-table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .video-table th,
-  .video-table td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  .video-table th {
-    background-color: #f4f4f4;
-    font-weight: bold;
-  }
-  
-  .video-item:hover {
-    background-color: #f0f0f0;
-  }
-  
-  .video-form {
-    width: 100%;
-    flex: 1;
-    padding: 2rem;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #fdfdfd;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  .video-form label {
-    display: block; 
-    margin-bottom: 10px; 
-  }
-  
-  .video-form input,
-  .video-form select {
-    display: block;
-    width: 95%; 
-    padding: 8px 10px; 
-    margin-top: 5px;
-  }
-  
-  .video-form button {
-    margin-top: 15px;
-  }
-  
-  .error {
-    color: red;
-    font-weight: bold;
-  }
-  
-  .save-button {
-    width: 150px;
-  }
-  
-  .delete-video-button {
-    border: none;
-    box-shadow: none;
-    width: 150px;
-  }
-  
+  margin: 20px;
+}
+
+.video-container h1 {
+  color: white;
+}
+
+.horizontal-container {
+  display: flex;
+  gap: 20px;
+}
+
+.video-list-container {
+  flex: 1.5;
+  border-radius: 5px;
+  padding: 20px;
+  overflow-x: auto;
+}
+
+.video-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  color: white;
+}
+
+.video-table th,
+.video-table td {
+  max-width: 200px;
+  padding: 8px;
+  text-align: left;
+}
+
+.video-table th {
+  padding: 25px;
+  text-align: center;
+  background-color: #6d6d6d;
+  box-shadow: 0px 4px 2px -2px rgb(0, 0, 0, 0.5);
+  font-weight: bold;
+}
+
+.video-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: #6d6d6d;
+}
+
+.video-table td {
+  padding: 25px;
+  text-align: center;
+  background-color: #6d6d6d;
+  background: linear-gradient(0deg, #505050, #4A4A4A);
+  border-bottom: 1px solid #313131;
+}
+
+.video-table td button {
+  padding: 5px 10px;
+  margin: 2px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.edit-video-button {
+  background-color: rgb(50, 50, 150);
+  color: white;
+  border: none;
+}
+
+.edit-video-button:hover {
+  background-color: rgb(73, 73, 211);
+}
+
+.delete-video-button {
+  background-color: rgb(165, 0, 0);
+  color: white;
+  border: none;
+}
+
+.delete-video-button:hover {
+  background-color: rgb(231, 0, 0);
+}
+
+.video-form-container {
+  flex: 1;
+  padding: 20px;
+  color: black;
+  border-radius: 10px;
+  background-color: white;
+}
+
+.video-form-container h2 {
+  margin-bottom: 20px;
+}
+
+.search-container {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.search-bar {
+  flex-grow: 1;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.search-button {
+  padding: 8px 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.search-button:hover {
+  background-color: #0056b3;
+}
+
+.video-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  color: black;
+  font-weight: bold;
+}
+
+.form-group input {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.image-preview-container {
+  margin-top: 15px;
+}
+
+.image-preview-container label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.image-preview {
+  max-width: 100%;
+  max-height: 150px;
+  border-radius: 5px;
+  margin-top: 5px;
+}
+
+.save-button {
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.save-button:hover {
+  background-color: #218838;
+}
+
+button {
+  margin-left: 10px;
+}
+
+.video-preview iframe {
+  width: 100%;
+  height: 315px;
+  border: 0;
+  margin-bottom: 10px;
+}
+
+.scrollable-table-container {
+  max-height: 500px; 
+  overflow-y: auto;
+}
+
+.scrollable-table-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scrollable-table-container::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 4px;
+}
+
+.scrollable-table-container::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
+.url-cell {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.video-list-container .scrollable-table-container {
+  overflow-x: hidden;
+}  
