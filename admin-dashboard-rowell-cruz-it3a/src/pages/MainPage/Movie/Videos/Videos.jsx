@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { useUserContext } from "../../../../context/UserContext";
 import "./Videos.css";
 
 const Videos = () => {
   const { movieId } = useParams();
+  const { userId, accessToken } = useUserContext();
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -19,9 +21,6 @@ const Videos = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [editing, setEditing] = useState(false);
 
-  const userId = 2;
-  const movieIdFromParam = movieId;
-  
   const tmdbApiKey = "497329e67f904395b79592a3c245314b"; 
 
   const fetchMovieVideos = async () => {
@@ -29,10 +28,10 @@ const Videos = () => {
     setError(null);
 
     try {
-      const response = await axios.get(`/videos/${movieIdFromParam}`, {
+      const response = await axios.get(`/videos/${movieId}`, {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          Authorization: `Bearer ${accessToken}`,
         },
       });
       setVideos(response.data || []);
@@ -44,7 +43,7 @@ const Videos = () => {
   };
 
   const handleImport = async () => {
-    const tmdbEndpoint = `https://api.themoviedb.org/3/movie/${movieIdFromParam}/videos?api_key=${tmdbApiKey}`;
+    const tmdbEndpoint = `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${tmdbApiKey}`;
     
     if (!window.confirm("Are you sure you want to import videos from TMDB?")) {
       return;
@@ -63,7 +62,7 @@ const Videos = () => {
       }
   
       const mappedVideos = tmdbVideos.map((video) => ({
-        movieId: movieIdFromParam,
+        movieId,
         userId,
         url: `https://www.youtube.com/embed/${video.key}`,
         name: video.name || "Unknown Name",
@@ -78,7 +77,7 @@ const Videos = () => {
           await axios.post("/videos", videoPayload, {
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+              Authorization: `Bearer ${accessToken}`,
             },
           });
         })
@@ -117,7 +116,7 @@ const Videos = () => {
     }
   
     const videoPayload = {
-      movieId: movieIdFromParam,
+      movieId,
       userId,
       url,
       name,
@@ -134,20 +133,19 @@ const Videos = () => {
       ? await axios.patch(`/admin/videos/${selectedVideo.id}`, videoPayload, {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            Authorization: `Bearer ${accessToken}`,
           },
         })
       : await axios.post("/videos", videoPayload, {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            Authorization: `Bearer ${accessToken}`,
           },
         });
       
       console.log("Update response:", response.data);
       alert(editing ? "Video updated." : "New Video added.");
     
-  
       await fetchMovieVideos();
       resetForm();
     } catch (error) {
@@ -181,7 +179,7 @@ const Videos = () => {
         await axios.delete(`/admin/videos/${selectedVideo.id}`, {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            Authorization: `Bearer ${accessToken}`,
           },
         });
         alert("Video deleted successfully.");
@@ -201,10 +199,10 @@ const Videos = () => {
   }, [videoKey]);
 
   useEffect(() => {
-    if (movieIdFromParam) {
+    if (movieId) {
       fetchMovieVideos();
     }
-  }, [movieIdFromParam]);
+  }, [movieId]);
 
   return (
     <div className="video-container">

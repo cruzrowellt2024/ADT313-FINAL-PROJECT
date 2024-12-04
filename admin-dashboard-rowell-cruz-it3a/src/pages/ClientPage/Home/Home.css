@@ -1,30 +1,56 @@
 .featured-movie-container {
+  /* Remove if not needed */
 }
+
 .page-title {
   font-size: 4.5rem;
 }
+
 .list-container {
   display: flex;
   flex-wrap: wrap;
   flex: 1;
   gap: 1rem;
+  justify-content: center;
 }
 
 .featured-list-container {
   width: 100%;
   margin-bottom: 5rem;
-  aspect-ratio: 16 / 9;
+  position: relative;
+  padding-bottom: 56.25%; /* Aspect ratio 16:9 fallback */
 }
+
 .featured-backdrop {
   height: 100%;
   width: 100%;
-  background-size: cover !important;
+  background-size: cover;
   display: flex;
   align-items: end;
 }
+
 .featured-movie-title {
   font-weight: bold;
   font-size: 3rem;
   width: 100%;
   padding: 2rem;
+  background-color: rgba(0, 0, 0, 0.6); /* For better readability */
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8); /* Optional */
+}
+
+@media (max-width: 768px) {
+  .page-title {
+    font-size: 2.5rem;
+  }
+
+  .featured-movie-title {
+    font-size: 1.5rem;
+    padding: 1rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .list-container {
+    justify-content: flex-start;
+  }
 }

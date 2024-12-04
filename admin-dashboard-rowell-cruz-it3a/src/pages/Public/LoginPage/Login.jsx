@@ -7,6 +7,7 @@ import './Login.css';
 
 const Login = () => {
     const { setRole, setAccessToken, setUserInfo } = useUserContext();
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isFieldsDirty, setIsFieldsDirty] = useState(false);
@@ -61,6 +62,8 @@ const Login = () => {
                 setUserInfo(user);
 
                 localStorage.setItem('accessToken', access_token);
+                localStorage.setItem('role', user.role);
+                localStorage.setItem('userInfo', JSON.stringify(user));
 
                 if (user.role === 'admin') {
                     navigate('/main/movies');
@@ -86,23 +89,23 @@ const Login = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        setIsFieldsDirty(true); 
+        setIsFieldsDirty(true);
 
         if (email === '') {
-            emailRef.current.focus(); 
+            emailRef.current.focus();
         } else if (password === '') {
-            passwordRef.current.focus();  
+            passwordRef.current.focus();
         } else {
-            handleLogin(); 
+            handleLogin();
         }
     };
 
     const getInputClass = (field) => {
         if (isFieldsDirty) {
             if (field === 'email' && email === '') {
-                return 'input-error'; 
+                return 'input-error';
             } else if (field === 'password' && password === '') {
-                return 'input-error'; 
+                return 'input-error';
             }
         }
         return '';
@@ -125,7 +128,7 @@ const Login = () => {
                             id="email"
                             placeholder="Enter your email"
                             onChange={(e) => handleOnChange(e, 'email')}
-                            className={getInputClass('email')} 
+                            className={getInputClass('email')}
                         />
                     </div>
                     <div className="form-group">
@@ -138,7 +141,7 @@ const Login = () => {
                                 name='password'
                                 ref={passwordRef}
                                 onChange={(e) => handleOnChange(e, 'password')}
-                                className={getInputClass('password')} 
+                                className={getInputClass('password')}
                             />
                             <button
                                 type="button"

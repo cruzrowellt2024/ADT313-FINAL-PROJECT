@@ -3,6 +3,7 @@ import './index.css';
 import * as React from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { UserProvider } from './context/UserContext';
+import MovieContextProvider from './context/MovieContext';
 import { ButtonProvider } from './context/ButtonContext';
 import Login from './pages/Public/LoginPage/Login';
 import Register from './pages/Public/RegisterPage/Register';
@@ -12,10 +13,12 @@ import Movie from './pages/MainPage/Movie/Movie';
 import Lists from './pages/MainPage/Movie/Lists/Lists';
 import Form from './pages/MainPage/Movie/Form/Form';
 import CastAndCrews from './pages/MainPage/Movie/CastAndCrews/CastAndCrews'; 
-import Images from './pages/MainPage/Movie/Images/Images'; 
+import Photos from './pages/MainPage/Movie/Photos/Photos'; 
 import Videos from './pages/MainPage/Movie/Videos/Videos';  
 import ClientPage from './pages/ClientPage/ClientPage';  
 import Home from './pages/ClientPage/Home/Home';  
+import View from './pages/ClientPage/View/View';  
+import ClientMovie from './pages/ClientPage/Movie/Movie'
 
 const router = createBrowserRouter([
   {
@@ -47,8 +50,8 @@ const router = createBrowserRouter([
                 element: <CastAndCrews />,
               },
               {
-                path: 'images',
-                element: <Images />,
+                path: 'photos',
+                element: <Photos />,
               },
               {
                 path: 'videos',
@@ -73,22 +76,30 @@ const router = createBrowserRouter([
           element: <Home/>
         },
         {
-          path: 'movie/:movieId',
-          element: <Movie/>
-        }
+          path: 'view/:movieId',
+          element: <View/>,
+          children: [
+          {
+            path: 'movie/:movieId',
+            element: <ClientMovie/>
+          }
+          ]
+        },
     ]
   }
 ]);
 
 function App() {
   return (
-    <UserProvider>
-      <ButtonProvider>
-        <div className="App">
-          <RouterProvider router={router} />
-        </div>
-      </ButtonProvider>
-    </UserProvider>
+    <MovieContextProvider>
+      <UserProvider>
+        <ButtonProvider>
+          <div className="App">
+            <RouterProvider router={router} />
+          </div>
+        </ButtonProvider>
+      </UserProvider>
+    </MovieContextProvider>
   );
 }
 

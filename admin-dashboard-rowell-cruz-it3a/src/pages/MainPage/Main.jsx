@@ -1,19 +1,23 @@
 import { useEffect, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import './Main.css';
+import { useUserContext } from '../../context/UserContext';
 
 const Main = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const { accessToken, setAccessToken, role, userInfo } = useUserContext();
 
   const toggleDropdown = () => {
     setIsDropdownOpen((prev) => !prev);
   };
 
-  const accessToken = localStorage.getItem('accessToken');
   const navigate = useNavigate();
 
   const handleLogout = () => {
+    setAccessToken(null);
     localStorage.removeItem('accessToken');
+    localStorage.removeItem('role');
+    localStorage.removeItem('userInfo');
     navigate('/');
   };
 
@@ -45,8 +49,8 @@ const Main = () => {
         </div>
       </header>
       <div className="outlet">
-          <Outlet />
-        </div>
+        <Outlet />
+      </div>
     </div>
   );
 };

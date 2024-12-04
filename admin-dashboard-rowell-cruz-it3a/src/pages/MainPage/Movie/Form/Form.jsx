@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 import { Outlet, useNavigate, useParams } from 'react-router-dom';
+import { useUserContext } from '../../../../context/UserContext'; 
 import './Form.css';
 
 const Form = () => {
@@ -10,7 +11,9 @@ const Form = () => {
   const [selectedMovie, setSelectedMovie] = useState(undefined);
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
-  let { movieId } = useParams();
+  const { movieId } = useParams();
+
+  const { accessToken } = useUserContext();
 
   const handleSearch = useCallback(() => {
     if (selectedMovie) {
@@ -23,7 +26,7 @@ const Form = () => {
           headers: {
             Accept: 'application/json',
             Authorization:
-              'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5YTdiNmUyNGJkNWRkNjhiNmE1ZWFjZjgyNWY3NGY5ZCIsIm5iZiI6MTcyOTI5NzI5Ny4wNzMzNTEsInN1YiI6IjY2MzhlZGM0MmZhZjRkMDEzMGM2NzM3NyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.ZIX4EF2yAKl6NwhcmhZucxSQi1rJDZiGG80tDd6_9XI',
+              `Bearer ${accessToken}`,
           },
         }
       )
@@ -31,7 +34,7 @@ const Form = () => {
         setSearchedMovieList(response.data.results);
       })
       .catch((error) => console.error('Error fetching search results:', error));
-}, [query, selectedMovie]);
+  }, [query, selectedMovie]);
 
   const handleSelectMovie = (movie) => {
     setSelectedMovie(movie);
@@ -40,7 +43,6 @@ const Form = () => {
   };
 
   const handleSave = () => {
-    const accessToken = localStorage.getItem('accessToken');
     setErrors({});
     
     const validationErrors = {};
@@ -88,7 +90,6 @@ const Form = () => {
         navigate('/main/movies');
       })
       .catch((error) => console.log('Error saving movie and reviews:', error));
-    
   };
 
   useEffect(() => {
@@ -111,8 +112,6 @@ const Form = () => {
         .catch((error) => console.error('Error fetching movie details:', error));
     }
   }, [movieId]);
-
-  
 
   return (
     <div className='main-form-container'>
@@ -267,10 +266,10 @@ const Form = () => {
             <button
               className='tab-btn'
               onClick={() =>
-                navigate(`/main/movies/form/${movieId}/images`)
+                navigate(`/main/movies/form/${movieId}/photos`)
               }
             >
-              Images
+              Photos
             </button>
           </div>
           <Outlet />

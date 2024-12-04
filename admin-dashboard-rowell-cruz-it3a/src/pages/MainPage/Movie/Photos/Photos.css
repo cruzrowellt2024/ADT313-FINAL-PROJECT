@@ -1,26 +1,25 @@
-.cast-and-crews {
+.photos {
   margin: 20px;
 }
 
-.cast-and-crews h1 {
+.photos h1 {
   color: white;
 }
 
-.horizontal-cast-container {
-  max-width: 90%;
+.horizontal-container {
   display: flex;
   gap: 20px;
 }
 
-.cast-list-container {
+.photo-list-container {
+  min-width: 150px;
   flex: 1.5;
   border-radius: 5px;
   padding: 20px;
   overflow-x: auto;
-  min-width: 60%; 
 }
 
-.cast-table {
+.photo-table {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
@@ -29,13 +28,13 @@
   color: white;
 }
 
-.cast-table th,
-.cast-table td {
+.photo-table th,
+.photo-table td {
   padding: 8px;
   text-align: left;
 }
 
-.cast-table th {
+.photo-table th {
   padding: 25px;
   text-align: center;
   background-color: #6d6d6d;
@@ -43,7 +42,7 @@
   font-weight: bold;
 }
 
-.cast-table td {
+.photo-table td {
   padding: 25px;
   text-align: center;
   background-color: #6d6d6d;
@@ -51,43 +50,42 @@
   border-bottom: 1px solid #313131;
 }
 
-.cast-table td button {
+.photo-table td button {
   padding: 5px 10px;
   margin: 2px;
   border-radius: 5px;
   cursor: pointer;
 }
 
-.edit-cast-button {
+.edit-photo-button {
   background-color: rgb(50, 50, 150);
   color: white;
   border: none;
 }
 
-.edit-cast-button:hover {
+.edit-photo-button:hover {
   background-color: rgb(73, 73, 211);
 }
 
-.delete-cast-button {
+.delete-photo-button {
   background-color: rgb(165, 0, 0);
   color: white;
   border: none;
 }
 
-.delete-cast-button:hover {
+.delete-photo-button:hover {
   background-color: rgb(231, 0, 0);
 }
 
-.cast-form-container {
+.photo-form-container {
   flex: 1;
   padding: 20px;
   color: black;
   border-radius: 10px;
   background-color: white;
-  min-width: 40%;
 }
 
-.cast-form-container h2 {
+.photo-form-container h2 {
   margin-bottom: 20px;
 }
 
@@ -96,14 +94,6 @@
   gap: 10px;
   align-items: center;
   margin-bottom: 20px; 
-  visibility: visible;
-}
-
-.search-container.hidden {
-  visibility: hidden; /* Hides the content but retains space */
-  height: 0; /* Prevents extra height from affecting layout */
-  margin-bottom: 0; /* Ensures no extra margin */
-  overflow: hidden; /* Safeguards against overflow content */
 }
 
 .search-bar {
@@ -126,7 +116,7 @@
   background-color: #0056b3;
 }
 
-.cast-form {
+.photo-form {
   display: flex;
   flex-direction: column;
 }

@@ -3,9 +3,9 @@ import './Register.css';
 import { useNavigate } from 'react-router-dom';
 import { useDebounce } from '../../../utils/hooks/useDebounce';
 import axios from 'axios';
-import { useUserContext } from '../../../context/UserContext'; //
+import { useUserContext } from '../../../context/UserContext';
 
-function RegisterPage() {
+function Register() {
   const { setRole, setAccessToken, setUserInfo } = useUserContext();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -67,17 +67,13 @@ function RegisterPage() {
   const handleRegister = async () => {
     const data = { email, password, firstName, middleName, lastName, contactNo, role };
     setStatus('loading');
-
+    
     try {
-      const response = await axios({
-        method: 'post',
-        url: '/admin/register',
-        data,
-        headers: { 'Access-Control-Allow-Origin': '*' },
-      });
+      const response = await axios.post('/admin/register', data);
+      console.log(response.data);
 
-      const { access_token, user } = response.data;
-      if (access_token && user) {
+      if (response.data && response.data.access_token && response.data.user) {
+        const { access_token, user } = response.data;
         setAccessToken(access_token);
         setRole(user.role);
         setUserInfo(user);
@@ -90,17 +86,17 @@ function RegisterPage() {
           navigate('/home');
         }
       } else {
-        console.error('Invalid registration response');
+        console.error('Invalid registration response:', response.data);
       }
-
+    
       setStatus('idle');
     } catch (e) {
       setStatus('idle');
       console.error(e);
-      alert(e.response?.data?.message || 'Registration failed. Please try again.');
+      navigate('/');
     }
   };
-
+  
   useEffect(() => {
     setDebounceState(true);
   }, [userInputDebounce]);
@@ -229,4 +225,4 @@ function RegisterPage() {
   );
 }
 
-export default RegisterPage;
+export default Register;

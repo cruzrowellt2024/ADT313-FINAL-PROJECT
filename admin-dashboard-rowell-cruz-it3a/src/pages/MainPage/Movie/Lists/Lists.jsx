@@ -1,14 +1,13 @@
-import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useButtonContext } from '../../../../context/ButtonContext';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useUserContext } from '../../../../context/UserContext';
 import './Lists.css';
 
 const Lists = () => {
-  const accessToken = localStorage.getItem('accessToken');
+  const { accessToken } = useUserContext();
   const navigate = useNavigate();
   const [lists, setLists] = useState([]);
-  const { setIsCreateMode, setTitle } = useButtonContext(); // Access title context
 
   const getMovies = () => {
     axios.get('/movies').then((response) => {
@@ -26,7 +25,7 @@ const Lists = () => {
       axios
         .delete(`/movies/${id}`, {
           headers: {
-            Authorization: `Bearer ${accessToken}`,
+            Authorization: `Bearer ${accessToken}`, 
           },
         })
         .then(() => {
@@ -61,9 +60,7 @@ const Lists = () => {
                     type="button"
                     className="edit-button"
                     onClick={() => {
-                      setTitle('Edit Movie'); // Update the title for editing
                       navigate('/main/movies/form/' + movie.id);
-                      setIsCreateMode(false); // Switch to "Back" mode
                     }}
                   >
                     Edit
