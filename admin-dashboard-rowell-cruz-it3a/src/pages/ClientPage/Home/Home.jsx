@@ -10,7 +10,6 @@ const Home = () => {
   const navigate = useNavigate();
   const [featuredMovie, setFeaturedMovie] = useState(null);
   const { movieList, setMovieList, setMovie } = useMovieContext();
-
   const [movies, setMovies] = useState([]);
 
   const getMovies = () => {
@@ -22,7 +21,7 @@ const Home = () => {
         const random = Math.floor(Math.random() * response.data.length);
         setFeaturedMovie(response.data[random]);
       })
-      .catch((e) => console.log(e));
+      .catch((e) => console.error(e));
   };
 
   useEffect(() => {
@@ -30,39 +29,52 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    setTimeout(() => {
+    const interval = setInterval(() => {
       if (movies.length) {
-        console.log('change movie');
         const random = Math.floor(Math.random() * movies.length);
         setFeaturedMovie(movies[random]);
       }
     }, 5000);
-    return;
-  }, [featuredMovie, movies]);
+
+    return () => clearInterval(interval);
+  }, [movies]);
 
   return (
-    <div className="main-container">
-      <h1 className="page-title">Movies</h1>
-      {featuredMovie && movies.length ? (
-        <div className="featured-list-container">
+    <main className="home-container">
+
+      {featuredMovie && movies.length > 0 ? (
+        <section className="featured-section">
           <div
             className="featured-backdrop"
+            aria-label={`Featured Movie: ${featuredMovie.title}`}
             style={{
-              background: `url(${
-                featuredMovie.backdropPath !==
-                'https://image.tmdb.org/t/p/original/undefined'
+              backgroundImage: `url(${
+                featuredMovie.backdropPath &&
+                featuredMovie.backdropPath !== 'https://image.tmdb.org/t/p/original/undefined' &&
+                featuredMovie.backdropPath !== 'https://your/alternative/url' 
                   ? featuredMovie.backdropPath
                   : featuredMovie.posterPath
-              }) no-repeat center top`,
+              })`,
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
             }}
+            onClick={() => navigate(`/home/view/${featuredMovie.id}`)}
           >
-            <span className="featured-movie-title">{featuredMovie.title}</span>
+            <span className="featured-movie-title">
+              <h1>{featuredMovie.title}</h1>
+              <h4>{featuredMovie.overview}</h4>
+            </span>
           </div>
-        </div>
+        </section>
       ) : (
-        <div className="featured-list-container-loader"></div>
+        <div
+          className="featured-list-container-loader"
+          aria-busy="true"
+          aria-label="Loading featured movie"
+        ></div>
       )}
-      <div className="list-container">
+
+      <section className="list-container">
         {movies.length > 0 ? (
           movies.map((movie) => (
             <MovieCards
@@ -77,8 +89,8 @@ const Home = () => {
         ) : (
           <p>No movies available</p>
         )}
-      </div>
-    </div>
+      </section>
+    </main>
   );
 };
 

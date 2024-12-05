@@ -21,6 +21,14 @@ const Login = () => {
     const navigate = useNavigate();
     const [result, setResult] = useState();
 
+    let apiUrl;
+
+    if (window.location.pathname.includes('/admin')) {
+        apiUrl = '/admin/login';
+    } else {
+        apiUrl = '/user/login';
+    }
+
     const handleShowPassword = useCallback(() => {
         setIsShowPassword((value) => !value);
     }, [isShowPassword]);
@@ -50,7 +58,7 @@ const Login = () => {
         try {
             const res = await axios({
                 method: 'post',
-                url: '/admin/login',
+                url: apiUrl,
                 data,
                 headers: { 'Access-Control-Allow-Origin': '*' },
             });
@@ -65,7 +73,7 @@ const Login = () => {
                 localStorage.setItem('role', user.role);
                 localStorage.setItem('userInfo', JSON.stringify(user));
 
-                if (user.role === 'admin') {
+                if (apiUrl === '/admin/login') {
                     navigate('/main/movies');
                 } else {
                     navigate('/home');

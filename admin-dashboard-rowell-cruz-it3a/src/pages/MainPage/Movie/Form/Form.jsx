@@ -9,6 +9,7 @@ const Form = () => {
   const [query, setQuery] = useState('');
   const [searchedMovieList, setSearchedMovieList] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState(undefined);
+  const [isFeatured, setIsFeatured] = useState(0);
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
   const { movieId } = useParams();
@@ -26,7 +27,7 @@ const Form = () => {
           headers: {
             Accept: 'application/json',
             Authorization:
-              `Bearer ${accessToken}`,
+              `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0OTczMjllNjdmOTA0Mzk1Yjc5NTkyYTNjMjQ1MzE0YiIsIm5iZiI6MTczMTA2MzMwOC41MDEsInN1YiI6IjY3MmRlZTBjMmQ3NjgxMzFmOWE2NGJlOSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.XzNTWEmA_qlIOARyn213LoakygZaUGwh8tJEiKI3M6E`,
           },
         }
       )
@@ -74,7 +75,7 @@ const Form = () => {
       voteAverage: selectedMovie.vote_average,
       backdropPath: `https://image.tmdb.org/t/p/original/${selectedMovie.backdrop_path}`,
       posterPath: `https://image.tmdb.org/t/p/original/${selectedMovie.poster_path}`,
-      isFeatured: 0,
+      isFeatured: isFeatured,
     };
     
     const request = axios({
@@ -235,6 +236,17 @@ const Form = () => {
                     }
                   />
                   {errors.voteAverage && <p className="error">{errors.voteAverage}</p>}
+                </div>
+                    
+                <div className="field">
+                  Is Featured:
+                  <select
+                    value={isFeatured}
+                    onChange={(e) => setIsFeatured(Number(e.target.value))}
+                  >
+                    <option value={0}>No</option>
+                    <option value={1}>Yes</option>
+                  </select>
                 </div>
 
                 <button type="button" onClick={handleSave}>

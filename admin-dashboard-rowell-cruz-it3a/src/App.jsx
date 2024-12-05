@@ -30,6 +30,14 @@ const router = createBrowserRouter([
     element: <Register />,
   },
   {
+    path: '/admin',
+    element: <Login />,
+  },
+  {
+    path: '/admin/register',
+    element: <Register />,
+  },
+  {
     path: '/main',
     element: <MainPage />,
     children: [

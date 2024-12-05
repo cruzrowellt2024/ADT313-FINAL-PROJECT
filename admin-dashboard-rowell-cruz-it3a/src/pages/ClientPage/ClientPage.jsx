@@ -18,14 +18,14 @@ const Main = () => {
   }, [accessToken]);
 
   return (
-    <div className="main-page">
-      <header className="header">
-        <div className="left-side">
+    <div className="client-page">
+      <header className="client-header">
+        <div className="client-left-side">
         </div>
-        <div className="center">
+        <div className="client-center">
           <h1>The Movie DB</h1>
         </div>
-        <div className="right-side">
+        <div className="client-right-side">
           <button className="logout-btn" onClick={handleLogout}>Logout</button>
         </div>
       </header>

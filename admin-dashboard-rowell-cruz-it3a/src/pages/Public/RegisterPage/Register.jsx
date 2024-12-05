@@ -6,14 +6,14 @@ import axios from 'axios';
 import { useUserContext } from '../../../context/UserContext';
 
 function Register() {
-  const { setRole, setAccessToken, setUserInfo } = useUserContext();
+  const { setAccessToken, setUserInfo } = useUserContext();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [firstName, setFirstName] = useState('');
   const [middleName, setMiddleName] = useState('');
   const [lastName, setLastName] = useState('');
   const [contactNo, setContactNo] = useState('');
-  const [role, setRoleLocal] = useState('');
+  const [role, setRole] = useState('');
   const [isFieldsDirty, setIsFieldsDirty] = useState(false);
   const emailRef = useRef();
   const passwordRef = useRef();
@@ -21,7 +21,6 @@ function Register() {
   const middleNameRef = useRef();
   const lastNameRef = useRef();
   const contactNoRef = useRef();
-  const roleRef = useRef();
   const [isShowPassword, setIsShowPassword] = useState(false);
   const userInputDebounce = useDebounce({ email, password, firstName, middleName, lastName, contactNo, role }, 2000);
   const [debounceState, setDebounceState] = useState(false);
@@ -29,9 +28,25 @@ function Register() {
 
   const navigate = useNavigate();
 
+  let apiUrl;
+
+  useEffect(() => {
+    if (window.location.pathname.includes('/admin')) {
+      setRole('admin');
+    } else {
+      setRole('user');
+    }
+  }, []);
+
+  if (role === 'admin') {
+    apiUrl = '/admin/register';
+  } else {
+    apiUrl = '/user/register';
+  }
+
   const handleShowPassword = useCallback(() => {
     setIsShowPassword((value) => !value);
-  }, [isShowPassword]);
+  }, []);
 
   const handleOnChange = (event, type) => {
     setDebounceState(false);
@@ -56,9 +71,6 @@ function Register() {
       case 'contactNo':
         setContactNo(event.target.value);
         break;
-      case 'role':
-        setRoleLocal(event.target.value);
-        break;
       default:
         break;
     }
@@ -67,32 +79,29 @@ function Register() {
   const handleRegister = async () => {
     const data = { email, password, firstName, middleName, lastName, contactNo, role };
     setStatus('loading');
-    
+  
     try {
-      const response = await axios.post('/admin/register', data);
-      console.log(response.data);
-
-      if (response.data && response.data.access_token && response.data.user) {
-        const { access_token, user } = response.data;
-        setAccessToken(access_token);
-        setRole(user.role);
-        setUserInfo(user);
-
-        localStorage.setItem('accessToken', access_token);
-
-        if (user.role === 'admin') {
-          navigate('/main/movies');
+      const response = await axios.post(apiUrl, data);
+  
+      if (response.data) {
+        const { id, message, access_token, user } = response.data;
+  
+        if (access_token && user) {
+          setAccessToken(access_token);
+          setUserInfo(user);
+          localStorage.setItem('accessToken', access_token);
+        } else if (id && message) {
+          alert(`Registration successful`);
+          navigate(role === 'admin' ? '/main/movies' : '/home');
         } else {
-          navigate('/home');
+          console.error('Unexpected response format:', response.data);
         }
-      } else {
-        console.error('Invalid registration response:', response.data);
       }
-    
+  
       setStatus('idle');
-    } catch (e) {
+    } catch (error) {
       setStatus('idle');
-      console.error(e);
+      console.error('Registration error:', error);
       navigate('/');
     }
   };
@@ -155,18 +164,6 @@ function Register() {
                 onChange={(e) => handleOnChange(e, 'contactNo')}
               />
               {debounceState && isFieldsDirty && contactNo === '' && (
-                <span className="errors">This field is required</span>
-              )}
-            </div>
-            <div className="form-group">
-              <label>Role:</label>
-              <input
-                type="text"
-                name="role"
-                ref={roleRef}
-                onChange={(e) => handleOnChange(e, 'role')}
-              />
-              {debounceState && isFieldsDirty && role === '' && (
                 <span className="errors">This field is required</span>
               )}
             </div>

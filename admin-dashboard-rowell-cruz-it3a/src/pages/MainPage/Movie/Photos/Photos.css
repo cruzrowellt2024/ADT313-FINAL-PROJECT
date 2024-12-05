@@ -12,11 +12,12 @@
 }
 
 .photo-list-container {
-  min-width: 150px;
+  max-height: 400px; 
   flex: 1.5;
   border-radius: 5px;
   padding: 20px;
   overflow-x: auto;
+  overflow-y: auto;
 }
 
 .photo-table {

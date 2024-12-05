@@ -6,11 +6,12 @@ import { useUserContext } from "../../../../context/UserContext";
 
 const Photos = () => {
   const { movieId } = useParams();
+  const [ movie, setMovie] = useState([]);
   const { userId, accessToken } = useUserContext();
   const [photos, setPhotos] = useState([]);
   const [loading, setLoading] = useState(false);
   const [editing, setEditing] = useState(false);
-  const [url, setUrl] = useState("");
+  const [photoUrl, setPhotoUrl] = useState("");
   const [photoPreview, setPhotoPreview] = useState('');
   const [description, setDescription] = useState("");
   const [editPhotoId, setEditPhotoId] = useState(null);
@@ -62,6 +63,16 @@ const Photos = () => {
       setLoading(false);
     }
   };
+
+  const getMovies = async () => {
+    try {
+      const response = await axios.get(`/movies/${movieId}`);
+      setMovie(response.data);
+    } catch (err) {
+      console.error("Error fetching movie data:", err);
+    }
+  };
+  
   
   const fetchPhotos = async () => {
     setLoading(true);
@@ -72,7 +83,6 @@ const Photos = () => {
           Authorization: `Bearer ${accessToken}`,
         },
       });
-      console.log("Full API Response:", response); 
   
       if (response.data && response.data.id) {
         setPhotos([response.data]);
@@ -89,8 +99,8 @@ const Photos = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (url && description) {
-      const newPhoto = { userId, movieId, url, description };
+    if (photoUrl && description) {
+      const newPhoto = { userId, movieId, photoUrl, description };
         
       try {
         const response = editing
@@ -110,67 +120,68 @@ const Photos = () => {
         console.log('Photo saved successfully:', response.data);
         alert(editing ? "Photo updated." : "New photo added.");
         
-        await fetchPhotos();
-        await resetForm();
       } catch (error) {
-        await fetchPhotos();
-        await resetForm();
         console.error('Error saving photo:', error);
+      } finally {
+        resetForm();
       }
     }
   };
   
-  const handleEdit = (id) => {
-    const photoToEdit = photos.find(photo => photo.id === id);
-    if (photoToEdit) {
-      setEditPhotoId(photoToEdit);
-      setUrl(photoToEdit.url);
-      setDescription(photoToEdit.description);
-      setEditing(true);
-      setEditPhotoId(photoToEdit.id);
-    }
+  const handleEdit = (selectedId, selectedUrl, selectedDescription) => {
+    setEditPhotoId(selectedId);
+    setPhotoUrl(selectedUrl);
+    setDescription(selectedDescription);
+    setEditing(true);
   };
-
-  const handleDelete = async () => {
-    if (editPhotoId) {
+  
+  const handleDelete = async (id) => {
+    if (id) {
       try {
-        await axios.delete(`/admin/photos/${editPhotoId}`, {
+        const response =await axios.delete(`/photos/${id}`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
         });
         alert("Photo deleted successfully.");
-        await fetchPhotos();
         resetForm();
+        console.log(response.data);
       } catch (error) {
         console.error("Error details:", error);
         alert("An error occurred while deleting the photo.");
+      } finally {
+        resetForm();
       }
     }
   };
 
   const resetForm = () => {
+    fetchPhotos();
+    getMovies();
     setEditPhotoId(null);
-    setUrl("");
+    setPhotoUrl("");
     setDescription("");
+    setPhotoPreview("");
+    setEditing(false);
   };
 
   useEffect(() => {
     if (movieId) {
       fetchPhotos();
+      getMovies();
     }
   }, [movieId]);
 
   useEffect(() => {
-    if (url) {
-      if (typeof url === 'string' && url.startsWith("http")) {
-        setPhotoPreview(url);
-      } else if (url instanceof File) {
-        const previewUrl = URL.createObjectURL(url);
+    if (photoUrl) {
+      if (typeof photoUrl === 'string' && photoUrl.startsWith("http")) {
+        setPhotoPreview(photoUrl);
+      } else if (photoUrl instanceof File) {
+        const previewUrl = URL.createObjectURL(photoUrl);
         setPhotoPreview(previewUrl);
       }
     }
-  }, [url]);
+  }, [photoUrl]);
 
   return (
     <div className="photos">
@@ -178,31 +189,43 @@ const Photos = () => {
       <div className="horizontal-container">
         {loading && <p>Loading...</p>}
         <div className="photo-list-container">
-        {photos.length > 0 ? (
-          <table className="photo-table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Description</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {photos.map(photos => (
-                <tr key={photos.id}>
-                  <td>{photos.id}</td>
-                  <td>{photos.description}</td>
-                  <td>
-                    <button className="edit-cast-button" onClick={() => handleEdit(photos.id)}>Edit</button>
-                    <button className="delete-cast-button" onClick={() => handleDelete(photos.id)}>Delete</button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        ) : (
-          <p>No photo data available.</p>
-        )}
+          <div>
+            {movie.photos && movie.photos.length > 0 ? (
+              <table className="photo-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Description</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {movie.photos.map((photo, index) => (
+                    <tr key={index}>
+                      <td>{photo.id}</td>
+                      <td>{photo.description || "No description"}</td>
+                      <td>
+                        <button
+                          className="edit-photo-button"
+                          onClick={() => handleEdit(photo.id, photo.url, photo.description)}
+                        >
+                          Edit
+                        </button>
+                        <button
+                          className="delete-photo-button"
+                          onClick={() => handleDelete(photo.id)}
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <p>No photo data available.</p>
+            )}
+          </div>
         </div>
 
         <div className="photo-form-container">
@@ -223,8 +246,8 @@ const Photos = () => {
               <label>Image URL:</label>
               <input
                 type="text"
-                value={url || ""}
-                onChange={(e) => setUrl(e.target.value)}
+                value={photoUrl || ""}
+                onChange={(e) => setPhotoUrl(e.target.value)}
                 placeholder="Enter image url"
                 required
               />

@@ -1,41 +1,65 @@
-.featured-movie-container {
-  /* Remove if not needed */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
 }
 
 .page-title {
   font-size: 4.5rem;
+  text-align: center;
+  margin-bottom: 2rem;
 }
 
-.list-container {
+.home-container {
   display: flex;
-  flex-wrap: wrap;
-  flex: 1;
-  gap: 1rem;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.featured-section {
+  display: flex;
+  height: 60vh;
+  width: 96%;
+  margin-bottom: 100px;
 }
 
 .featured-list-container {
   width: 100%;
   margin-bottom: 5rem;
   position: relative;
-  padding-bottom: 56.25%; /* Aspect ratio 16:9 fallback */
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
 }
 
 .featured-backdrop {
   height: 100%;
   width: 100%;
   background-size: cover;
+  background-position: center;
   display: flex;
-  align-items: end;
+  align-items: flex-end;
+  transition: background-image 0.3s ease-in-out;
 }
 
 .featured-movie-title {
-  font-weight: bold;
-  font-size: 3rem;
   width: 100%;
-  padding: 2rem;
-  background-color: rgba(0, 0, 0, 0.6); /* For better readability */
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8); /* Optional */
+  padding: 1rem 2rem 1rem 2rem;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.6);
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+  transition: font-size 0.3s ease;
+}
+
+.list-container {
+  display: flex;
+  flex-wrap: wrap;
+  flex: 1;
+  gap: 1.5rem;
+  justify-content: center;
+  padding: 0 1rem;
+  border: none;
+  border-radius: 5px;
 }
 
 @media (max-width: 768px) {
@@ -49,8 +73,11 @@
   }
 }
 
-@media (min-width: 768px) {
-  .list-container {
-    justify-content: flex-start;
-  }
+.featured-backdrop:hover {
+  filter: brightness(1.1);
+}
+
+.list-container > *:hover {
+  transform: scale(1.05);
+  transition: transform 0.2s ease;
 }
