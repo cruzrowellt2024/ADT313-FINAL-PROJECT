@@ -29,6 +29,16 @@ class UserGateway
         //execute the SQL query
         $res->execute();
         return $this->conn->lastInsertId();
+
+        // Generate access token using JWT
+        $codec = new JWTCodec();
+        $access_token = $codec->encode($payload_response);
+
+        // Return access token and user details
+        return [
+            "access_token" => $access_token,
+            "user" => $payload_response
+        ];
     }
 
     public function login(string $email, string $password)

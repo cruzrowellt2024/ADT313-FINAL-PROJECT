@@ -15,7 +15,7 @@ class AdminPhotosGateway
         $res->bindValue(":movieId",$data["movieId"], PDO::PARAM_INT);
 
         $res->execute();
-        $data = $res->fetch(PDO::FETCH_ASSOC);
+        $data = $res->fetchAll(PDO::FETCH_ASSOC);
         return $data;
     }
 
@@ -54,7 +54,7 @@ class AdminPhotosGateway
         $res->bindValue(":movieId",$new["movieId"] ?? $current["movieId"], PDO::PARAM_INT);
         $res->bindValue(":url",$new["url"] ?? $current["url"], PDO::PARAM_STR);
         $res->bindValue(":description",$new["description"] ?? $current["description"], PDO::PARAM_STR);
-        $res->bindValue(":dateUpdated",$dateUpdated, PDO::PARAM_STR);
+        //$res->bindValue(":dateUpdated",$dateUpdated, PDO::PARAM_STR);
         $res->bindValue(":id", $current["id"], PDO::PARAM_INT);
 
         $res->execute();
@@ -64,7 +64,7 @@ class AdminPhotosGateway
 
     public function delete(string $id, string $userId): int
     {
-        $sql = "DELETE FROM photos WHERE id = :id AND userId = :userId";
+        $sql = "DELETE FROM photos WHERE id = :id";
         $res = $this->conn->prepare($sql);
         $res->bindValue(":id", $id, PDO::PARAM_INT);
         $res->bindValue(":userId", $userId, PDO::PARAM_INT);

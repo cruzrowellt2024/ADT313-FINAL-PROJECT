@@ -5,7 +5,7 @@ class AdminCastsController
     {
 
     }
-    public function processRequest(string $method, ?string $id,): void
+    public function processRequest(string $method, ?string $id): void
     {
 
         if (isset($id)) {
@@ -19,6 +19,7 @@ class AdminCastsController
 
     private function processResourceRequest(string $method, string $id): void
     {
+        error_log("Received method: $method for ID: $id");
         $cast = $this->gateway->get($id);
         if (!$cast) {
             http_response_code(404);
