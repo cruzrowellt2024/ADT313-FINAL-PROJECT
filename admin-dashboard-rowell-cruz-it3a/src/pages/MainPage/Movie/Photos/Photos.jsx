@@ -97,10 +97,11 @@ const Photos = () => {
   };
   
   const handleSubmit = async (e) => {
+
     e.preventDefault();
 
     if (photoUrl && description) {
-      const newPhoto = { userId, movieId, photoUrl, description };
+      const newPhoto = { userId, movieId, url: photoUrl, description };
         
       try {
         const response = editing
@@ -128,7 +129,7 @@ const Photos = () => {
     }
   };
   
-  const handleEdit = (selectedId, selectedUrl, selectedDescription) => {
+  const handleEdit = async (selectedId, selectedUrl, selectedDescription) => {
     setEditPhotoId(selectedId);
     setPhotoUrl(selectedUrl);
     setDescription(selectedDescription);

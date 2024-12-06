@@ -26,7 +26,6 @@ const Videos = () => {
   const fetchMovieVideos = async () => {
     setLoading(true);
     setError(null);
-
     try {
       const response = await axios.get(`/videos/${movieId}`, {
         headers: {
@@ -84,13 +83,13 @@ const Videos = () => {
       );
   
       alert("Videos imported successfully.");
-      await fetchMovieVideos();
     } catch (err) {
       console.error("Error importing videos:", err.response || err.message);
       alert("Failed to import videos from TMDB.");
     } finally {
       setLoading(false);
-    }
+      resetForm();
+    } 
   };  
 
   const resetForm = () => {
@@ -101,6 +100,7 @@ const Videos = () => {
     setVideoKey("");
     setOfficial(0);
     setSelectedVideo(null);
+    fetchMovieVideos();
   };  
 
   const generateEmbedUrl = (key) => {
@@ -145,14 +145,12 @@ const Videos = () => {
       
       console.log("Update response:", response.data);
       alert(editing ? "Video updated." : "New Video added.");
-    
-      await fetchMovieVideos();
-      resetForm();
     } catch (error) {
       console.error("Error details:", error.response || error.message);
       alert("An error occurred while saving the video.");
     } finally {
       setIsSubmitting(false);
+      resetForm();
     }
   };
   
@@ -173,21 +171,21 @@ const Videos = () => {
     setEditing(true);
   };
   
-  const handleDelete = async () => {
-    if (selectedVideo) {
+  const handleDelete = async (id) => {
+    if (id) {
       try {
-        await axios.delete(`/admin/videos/${selectedVideo.id}`, {
+        await axios.delete(`/admin/videos/${id}`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${accessToken}`,
           },
         });
         alert("Video deleted successfully.");
-        fetchMovieVideos();
-        resetForm();
       } catch (error) {
         console.error("Error details:", error);
         alert("An error occurred while deleting the video.");
+      } finally {
+        resetForm();
       }
     }
   };
@@ -237,8 +235,9 @@ const Videos = () => {
                       </button>
                       <button
                         className="delete-cast-button"
-                        onClick={() => handleDelete(video)}
+                        onClick={() => handleDelete(video.id)}
                       >
+                        
                         Delete
                       </button>
                     </td>
