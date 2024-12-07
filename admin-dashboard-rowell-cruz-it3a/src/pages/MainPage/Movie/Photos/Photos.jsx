@@ -89,6 +89,7 @@ const Photos = () => {
       } else {
         console.error("API response does not contain valid image data.");
       }
+      console.log(response.data.message);
     } catch (err) {
       console.error("Error fetching images:", err);
     } finally {
@@ -97,12 +98,11 @@ const Photos = () => {
   };
   
   const handleSubmit = async (e) => {
-
     e.preventDefault();
 
     if (photoUrl && description) {
-      const newPhoto = { userId, movieId, url: photoUrl, description };
-        
+      const newPhoto = { userId: userId, movieId: movieId, description: description, url: photoUrl};
+
       try {
         const response = editing
           ? await axios.patch(`/photos/${editPhotoId}`, newPhoto, {
@@ -139,14 +139,13 @@ const Photos = () => {
   const handleDelete = async (id) => {
     if (id) {
       try {
-        const response =await axios.delete(`/photos/${id}`, {
+        const response = await axios.delete(`/photos/${id}`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
         });
         alert("Photo deleted successfully.");
         resetForm();
-        console.log(response.data);
       } catch (error) {
         console.error("Error details:", error);
         alert("An error occurred while deleting the photo.");
@@ -191,7 +190,6 @@ const Photos = () => {
         {loading && <p>Loading...</p>}
         <div className="photo-list-container">
           <div>
-            {movie.photos && movie.photos.length > 0 ? (
               <table className="photo-table">
                 <thead>
                   <tr>
@@ -200,6 +198,7 @@ const Photos = () => {
                     <th>Actions</th>
                   </tr>
                 </thead>
+                {movie.photos && movie.photos.length > 0 ? (
                 <tbody>
                   {movie.photos.map((photo, index) => (
                     <tr key={index}>
@@ -222,10 +221,10 @@ const Photos = () => {
                     </tr>
                   ))}
                 </tbody>
-              </table>
             ) : (
-              <p>No photo data available.</p>
+              <></>
             )}
+              </table>
           </div>
         </div>
 

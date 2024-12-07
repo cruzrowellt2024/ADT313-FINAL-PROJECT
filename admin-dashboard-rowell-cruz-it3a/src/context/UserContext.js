@@ -25,7 +25,6 @@ export const UserProvider = ({ children }) => {
 
   useEffect(() => {
     localStorage.setItem("userInfo", JSON.stringify(userInfo));
-    console.log(userInfo);
   }, [userInfo]);
 
   const addMovie = (movie) => {

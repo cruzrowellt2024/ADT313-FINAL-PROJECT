@@ -50,6 +50,54 @@ const CastsAndCrews = () => {
     }
   };
 
+  const handleImport = async () => {
+    try {
+      setLoading(true);
+      const response = await axios({
+        method: 'get',
+        url: `https://api.themoviedb.org/3/movie/${movieId}/credits?language=en-US`,
+        headers: {
+          "Content-Type": 'application/json',
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0OTczMjllNjdmOTA0Mzk1Yjc5NTkyYTNjMjQ1MzE0YiIsIm5iZiI6MTczMTA2MzMwOC41MDEsInN1YiI6IjY3MmRlZTBjMmQ3NjgxMzFmOWE2NGJlOSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.XzNTWEmA_qlIOARyn213LoakygZaUGwh8tJEiKI3M6E`,
+        },
+      });
+  
+      if (response.data.cast && response.data.cast.length > 0) {
+        await Promise.all(response.data.cast.map(async (castInfo) => {
+          if (castInfo.name && castInfo.character) {
+            const newCasts = {
+              userId: userId,
+              movieId: movieId,
+              name: castInfo.name,
+              characterName: castInfo.character,
+              url: castInfo.profile_path ? `https://image.tmdb.org/t/p/w500${castInfo.profile_path}` : 'https://via.placeholder.com/200x300?text=No+Image',
+            };
+  
+            try {
+              await axios.post('/admin/casts', newCasts, {
+                headers: {
+                  Accept: 'application/json',
+                  Authorization: `Bearer ${accessToken}`,
+                },
+              });
+            } catch (error) {
+              console.error('Error importing cast:', error);
+            }
+          }
+        }));
+  
+        alert('Imported Success');
+      } else {
+        console.log("No cast data found.");
+      }
+    } catch (error) {
+      console.error('Error fetching movie credits:', error);
+    } finally {
+      setLoading(false);
+      fetchMovieCast();
+    }
+  };
+    
   const fetchMovieCast = async () => {
     setLoading(true);
 
@@ -59,15 +107,14 @@ const CastsAndCrews = () => {
           Authorization: `Bearer ${accessToken}`,
         },
       });
-      console.log("Fetched Cast List:", response.data);
       if (Array.isArray(response.data)) {
         setCasts(response.data);
-      } else {
       }
     } catch (err) {
       console.error("API error:", err.response ? err.response.data : err.message);
     } finally {
       setLoading(false);
+      fetchMovieCast();
     }
   };
 
@@ -109,11 +156,11 @@ const CastsAndCrews = () => {
 
         console.log('Cast saved successfully:', response.data);
         alert(editing ? "Cast updated." : "New actor added.");
-
-        await fetchMovieCast();
-        await handleCancel();
       } catch (error) {
         console.error('Error saving cast:', error);
+      } finally {
+        handleCancel();
+        setLoading(false);
       }
     }
   };
@@ -127,6 +174,7 @@ const CastsAndCrews = () => {
       setImagePreview(castToEdit.url);
       setEditing(true);
       setEditCastId(id);
+      setLoading(false);
     }
   };
 
@@ -144,12 +192,12 @@ const CastsAndCrews = () => {
 
         console.log("Cast deleted successfully:", response.data);
         alert("Cast deleted successfully.");
-
-        await fetchMovieCast();
       } catch (error) {
         console.error("Error deleting cast:", error);
       } finally {
         setLoading(false);
+        handleCancel();
+        fetchMovieCast();
       }
     }
   };
@@ -174,36 +222,33 @@ const CastsAndCrews = () => {
     <div className="cast-and-crews">
       <h1>Cast and Crews</h1>
       <div className="horizontal-cast-container">
-        {loading && <p>Loading...</p>}
-        {casts.length > 0 ? (
         <div className="cast-list-container">
-          <table className="cast-table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Character</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {casts.map(cast => (
-                <tr key={cast.id}>
-                  <td>{cast.id}</td>
-                  <td>{cast.name}</td>
-                  <td>{cast.characterName}</td>
-                  <td>
-                    <button className="edit-cast-button" onClick={() => handleEdit(cast.id)}>Edit</button>
-                    <button className="delete-cast-button" onClick={() => handleDelete(cast.id)}>Delete</button>
-                  </td>
+          <div class="scrollable-table-container">
+            <table className="cast-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Character</th>
+                  <th>Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {casts.map(cast => (
+                  <tr key={cast.id}>
+                    <td>{cast.id}</td>
+                    <td>{cast.name}</td>
+                    <td>{cast.characterName}</td>
+                    <td>
+                      <button className="edit-cast-button" onClick={() => handleEdit(cast.id)}>Edit</button>
+                      <button className="delete-cast-button" onClick={() => handleDelete(cast.id)}>Delete</button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
-        ) : (
-          <p>No cast data available.</p>
-        )}
 
         <div className="cast-form-container">
           <h2>{editing ? "Edit Cast" : "Add Cast"}</h2>
@@ -275,6 +320,11 @@ const CastsAndCrews = () => {
               <button type="submit" className="save-button">
                 {editing ? "Save Cast" : "Add Cast"}
               </button>
+              {!editing && (
+                <button type="button" className="save-button" onClick={handleImport}>
+                  Import from TMDB
+                </button>
+              )}
               {editing && (
                 <button type="button" className="save-button" onClick={handleCancel}>
                   Cancel

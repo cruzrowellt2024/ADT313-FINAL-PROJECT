@@ -146,8 +146,7 @@ const Videos = () => {
       console.log("Update response:", response.data);
       alert(editing ? "Video updated." : "New Video added.");
     } catch (error) {
-      console.error("Error details:", error.response || error.message);
-      alert("An error occurred while saving the video.");
+      // console.error("Error details:", error.response || error.message);
     } finally {
       setIsSubmitting(false);
       resetForm();
@@ -167,7 +166,7 @@ const Videos = () => {
     setSite(video.site || "");
     setVideoType(video.videoType || "");
     setVideoKey(video.videoKey || "");
-    setOfficial(video.official || 0);
+    setOfficial(video.official !== undefined ? video.official : 0); 
     setEditing(true);
   };
   
@@ -182,8 +181,7 @@ const Videos = () => {
         });
         alert("Video deleted successfully.");
       } catch (error) {
-        console.error("Error details:", error);
-        alert("An error occurred while deleting the video.");
+        //console.error("Error details:", error);
       } finally {
         resetForm();
       }
@@ -207,7 +205,6 @@ const Videos = () => {
       <h1>Video List</h1>
       <div className="horizontal-container">
         {loading && <p>Loading...</p>}
-        {error && <p className="error">{error}</p>}
         {!loading && !error && videos.length === 0 && <p>No videos available.</p>}
         <div className="video-list-container">
           <div className="scrollable-table-container">
