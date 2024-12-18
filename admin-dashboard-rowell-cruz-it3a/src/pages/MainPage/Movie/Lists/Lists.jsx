@@ -2,16 +2,17 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUserContext } from '../../../../context/UserContext';
+import { useMovieContext } from '../../../../context/MovieContext';
 import './Lists.css';
 
 const Lists = () => {
   const { accessToken } = useUserContext();
   const navigate = useNavigate();
-  const [lists, setLists] = useState([]);
+  const { movieList, setMovieList} = useMovieContext();
 
   const getMovies = () => {
     axios.get('/movies').then((response) => {
-      setLists(response.data);
+      setMovieList(response.data);
     });
   };
 
@@ -29,11 +30,11 @@ const Lists = () => {
           },
         })
         .then(() => {
-          const tempLists = [...lists];
-          const index = lists.findIndex((movie) => movie.id === id);
+          const tempLists = [...movieList];
+          const index = movieList.findIndex((movie) => movie.id === id);
           if (index !== undefined || index !== -1) {
             tempLists.splice(index, 1);
-            setLists(tempLists);
+            setMovieList(tempLists);
           }
         });
     }
@@ -51,7 +52,7 @@ const Lists = () => {
             </tr>
           </thead>
           <tbody>
-            {lists.map((movie) => (
+            {movieList.map((movie) => (
               <tr key={movie.id}>
                 <td>{movie.id}</td>
                 <td>{movie.title}</td>

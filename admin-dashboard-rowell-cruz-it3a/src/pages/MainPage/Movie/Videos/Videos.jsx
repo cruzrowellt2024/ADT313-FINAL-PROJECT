@@ -6,6 +6,7 @@ import "./Videos.css";
 
 const Videos = () => {
   const { movieId } = useParams();
+  const [movie, setMovie] = useState([]);
   const { userId, accessToken } = useUserContext();
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -42,7 +43,7 @@ const Videos = () => {
   };
 
   const handleImport = async () => {
-    const tmdbEndpoint = `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${tmdbApiKey}`;
+    const tmdbEndpoint = `https://api.themoviedb.org/3/movie/${movie.tmdbId}/videos?api_key=${tmdbApiKey}`;
     
     if (!window.confirm("Are you sure you want to import videos from TMDB?")) {
       return;
@@ -91,6 +92,15 @@ const Videos = () => {
       resetForm();
     } 
   };  
+
+  const getMovies = async () => {
+    try {
+      const response = await axios.get(`/movies/${movieId}`);
+      setMovie(response.data);
+    } catch (err) {
+      console.error("Error fetching movie data:", err);
+    }
+  };
 
   const resetForm = () => {
     setUrl("");
@@ -197,6 +207,7 @@ const Videos = () => {
   useEffect(() => {
     if (movieId) {
       fetchMovieVideos();
+      getMovies();
     }
   }, [movieId]);
 
@@ -204,7 +215,6 @@ const Videos = () => {
     <div className="video-container">
       <h1>Video List</h1>
       <div className="horizontal-container">
-        {loading && <p>Loading...</p>}
         {!loading && !error && videos.length === 0 && <p>No videos available.</p>}
         <div className="video-list-container">
           <div className="scrollable-table-container">
@@ -241,6 +251,7 @@ const Videos = () => {
                   </tr>
                 ))}
               </tbody>
+              <tfoot>{loading && <tr><td colSpan="4">Loading...</td></tr>}</tfoot>
             </table>
           </div>
         </div>

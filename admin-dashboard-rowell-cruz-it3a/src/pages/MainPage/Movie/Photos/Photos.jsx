@@ -6,7 +6,7 @@ import { useUserContext } from "../../../../context/UserContext";
 
 const Photos = () => {
   const { movieId } = useParams();
-  const [ movie, setMovie] = useState([]);
+  const [movie, setMovie] = useState([]);
   const { userId, accessToken } = useUserContext();
   const [photos, setPhotos] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -19,7 +19,7 @@ const Photos = () => {
   const tmdbApiKey = "497329e67f904395b79592a3c245314b"; 
 
   const handleImport = async () => {
-    const tmdbEndpoint = `https://api.themoviedb.org/3/movie/${movieId}/images?api_key=${tmdbApiKey}`;
+    const tmdbEndpoint = `https://api.themoviedb.org/3/movie/${movie.tmdbId}/images?api_key=${tmdbApiKey}`;
   
     if (!window.confirm("Are you sure you want to import images from TMDB?")) {
       return;
@@ -72,7 +72,6 @@ const Photos = () => {
       console.error("Error fetching movie data:", err);
     }
   };
-  
   
   const fetchPhotos = async () => {
     setLoading(true);
@@ -187,7 +186,6 @@ const Photos = () => {
     <div className="photos">
       <h1>Photos</h1>
       <div className="horizontal-container">
-        {loading && <p>Loading...</p>}
         <div className="photo-list-container">
           <div>
               <table className="photo-table">
@@ -221,9 +219,9 @@ const Photos = () => {
                     </tr>
                   ))}
                 </tbody>
-            ) : (
-              <></>
-            )}
+                ) : (
+                  <tfoot>{loading && <tr><td colSpan="4">Loading...</td></tr>}</tfoot>
+                )}
               </table>
           </div>
         </div>

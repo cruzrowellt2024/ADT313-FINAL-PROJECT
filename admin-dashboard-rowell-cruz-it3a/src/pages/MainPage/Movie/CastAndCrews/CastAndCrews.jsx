@@ -6,12 +6,12 @@ import './CastAndCrews.css';
 
 const CastsAndCrews = () => {
   const { movieId } = useParams();
+  const [movie, setMovie] = useState([]);
   const { accessToken, userId } = useUserContext();
   const [casts, setCasts] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [castName, setCastName] = useState('');
   const [characterName, setCharacterName] = useState('');
-  const [imageFile, setImageFile] = useState(null);
   const [imageUrl, setImageUrl] = useState('');
   const [imagePreview, setImagePreview] = useState('');
   const [loading, setLoading] = useState(false);
@@ -55,7 +55,7 @@ const CastsAndCrews = () => {
       setLoading(true);
       const response = await axios({
         method: 'get',
-        url: `https://api.themoviedb.org/3/movie/${movieId}/credits?language=en-US`,
+        url: `https://api.themoviedb.org/3/movie/${movie.tmdbId}/credits?language=en-US`,
         headers: {
           "Content-Type": 'application/json',
           Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0OTczMjllNjdmOTA0Mzk1Yjc5NTkyYTNjMjQ1MzE0YiIsIm5iZiI6MTczMTA2MzMwOC41MDEsInN1YiI6IjY3MmRlZTBjMmQ3NjgxMzFmOWE2NGJlOSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.XzNTWEmA_qlIOARyn213LoakygZaUGwh8tJEiKI3M6E`,
@@ -97,6 +97,17 @@ const CastsAndCrews = () => {
       fetchMovieCast();
     }
   };
+  
+  const getMovies = async () => {
+    try {
+      const response = await axios.get(`/movies/${movieId}`);
+      setMovie(response.data);
+    } catch (err) {
+      console.error("Error fetching movie data:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
     
   const fetchMovieCast = async () => {
     setLoading(true);
@@ -115,15 +126,6 @@ const CastsAndCrews = () => {
     } finally {
       setLoading(false);
       fetchMovieCast();
-    }
-  };
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const previewUrl = URL.createObjectURL(file);
-      setImageFile(file);
-      setImagePreview(previewUrl);
     }
   };
 
@@ -206,7 +208,6 @@ const CastsAndCrews = () => {
     setCastName('');
     setCharacterName('');
     setImageUrl('');
-    setImageFile(null);
     setImagePreview('');
     setEditing(false);
     setSearchQuery('');
@@ -215,6 +216,7 @@ const CastsAndCrews = () => {
   useEffect(() => {
     if (movieId) {
       fetchMovieCast();
+      getMovies();
     }
   }, [movieId]);
 
@@ -246,6 +248,7 @@ const CastsAndCrews = () => {
                   </tr>
                 ))}
               </tbody>
+              <tfoot>{loading && <tr><td colSpan="4">Loading...</td></tr>}</tfoot>
             </table>
           </div>
         </div>
@@ -294,15 +297,6 @@ const CastsAndCrews = () => {
                 value={imageUrl}
                 onChange={(e) => setImageUrl(e.target.value)}
                 placeholder="Enter image URL"
-              />
-            </div>
-
-            <div className="form-group">
-              <label>Upload Image:</label>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleFileChange}
               />
             </div>
 

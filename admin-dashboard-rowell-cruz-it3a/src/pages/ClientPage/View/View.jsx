@@ -31,11 +31,11 @@ function View() {
           <div
             className='movie-detail-container'
             style={{
-              backgroundImage: `url(${movie.backdropPath})`,
+              backgroundImage: `url(${movie.backdropPath && !movie.backdropPath.includes('null') && !movie.backdropPath.includes('undefined') ? movie.backdropPath : (movie.posterPath || 'https://via.placeholder.com/200x300?text=No+Image')})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               backgroundRepeat: 'no-repeat',
-            }}
+            }}          
           >
             <div className='movie-poster-container'>
               <img
@@ -52,42 +52,47 @@ function View() {
                 <strong>Popularity:</strong> {movie.popularity}
               </p>
               <p>
-                <strong>Release Date:</strong> {movie.release_date}
+                <strong>Vote Average:</strong> {movie.voteAverage}
               </p>
               <p>
-                <strong>Featured:</strong> {movie.is_featured ? 'Yes' : 'No'}
+                <strong>Release Date:</strong> {movie.release_date}
               </p>
             </div>
           </div>
 
           {/* Cast Section */}
-          {movie.casts && movie.casts.length && (
+          {movie?.casts?.length > 0 ? (
             <div>
               <h1>Cast & Crew</h1>
-              <div className='horizontal-scroll'>
+              <div className="horizontal-scroll">
                 {movie.casts.map((cast, index) => (
-                  <div key={index} className='cast'>
+                  <div key={index} className="cast">
                     <img
                       src={cast.url}
                       alt={cast.name}
-                      className='cast-image'
+                      className="cast-image"
                     />
-                    <div className='cast-content'>
+                    <div className="cast-content">
                       <h4>{cast.name}</h4>
                     </div>
                   </div>
                 ))}
               </div>
             </div>
+          ) : (
+            <div>
+              <h1>Cast & Crew</h1>
+              <p>No videos available.</p>
+            </div>
           )}
 
           {/* Videos Section */}
-          {movie.videos && movie.videos.length && (
+          {movie?.videos?.length > 0 ? (
             <div>
               <h1>Videos</h1>
-              <div className='horizontal-scroll'>
+              <div className="horizontal-scroll">
                 {movie.videos.map((video, index) => (
-                  <div key={index} className='video'>
+                  <div key={index} className="video">
                     <iframe
                       width="560"
                       height="315"
@@ -97,31 +102,41 @@ function View() {
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       allowFullScreen
                     ></iframe>
-                    <div className='video-content'>
+                    <div className="video-content">
                       <h4>{video.name}</h4>
                     </div>
                   </div>
                 ))}
               </div>
             </div>
+          ) : (
+            <div>
+              <h1>Videos</h1>
+              <p>No videos available.</p>
+            </div>
           )}
 
 
           {/* Photos Section */}
-          {movie.photos && movie.photos.length && (
+          {movie?.photos?.length > 0 ? (
             <div>
               <h1>Photos</h1>
-              <div className='horizontal-scroll'>
+              <div className="horizontal-scroll">
                 {movie.photos.map((photo, index) => (
-                  <div key={index} className='photo'>
+                  <div key={index} className="photo">
                     <img
                       src={photo.url}
                       alt={`Photo ${index + 1}`}
-                      className='photo-image'
+                      className="photo-image"
                     />
                   </div>
                 ))}
               </div>
+            </div>
+          ) : (
+            <div>
+              <h1>Photos</h1>
+              <p>No photos available.</p>
             </div>
           )}
         </div>

@@ -51,7 +51,7 @@ color: #fff;
 .form-group label {
 display: block;
 margin-bottom: 0.5rem;
-color: #fff;
+color: white;
 }
 
 .form-group input {
@@ -126,4 +126,3 @@ text-decoration: underline;
 input:focus.input-error {
     outline: none;
 }
-  
