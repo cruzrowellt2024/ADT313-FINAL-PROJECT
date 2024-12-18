@@ -61,6 +61,7 @@ const Photos = () => {
       alert("Failed to import images from TMDB.");
     } finally {
       setLoading(false);
+      resetForm();
     }
   };
 

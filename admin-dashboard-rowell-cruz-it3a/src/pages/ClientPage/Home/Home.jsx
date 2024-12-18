@@ -51,6 +51,7 @@ const Home = () => {
               backgroundImage: `url(${
                 featuredMovie.backdropPath &&
                 featuredMovie.backdropPath !== 'https://image.tmdb.org/t/p/original/undefined' &&
+                featuredMovie.backdropPath !== 'https://image.tmdb.org/t/p/original/null' &&
                 featuredMovie.backdropPath !== featuredMovie.posterPath 
                   ? featuredMovie.backdropPath
                   : featuredMovie.posterPath
