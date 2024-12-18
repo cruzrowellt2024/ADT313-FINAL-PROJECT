@@ -12,10 +12,11 @@ class AdminPhotosGateway
     {
         $sql = "SELECT * FROM photos WHERE movieId = :movieId";
         $res = $this->conn->prepare($sql);
-        $res->bindValue(":movieId",$data["movieId"], PDO::PARAM_INT);
+        $res->bindValue(":movieId", $movieId, PDO::PARAM_INT);
 
         $res->execute();
-        $data = $res->fetchAll(PDO::FETCH_ASSOC);
+        $data = $res->fetchAll(PDO::FETCH_ASSOC); 
+
         return $data;
     }
 
@@ -64,7 +65,7 @@ class AdminPhotosGateway
 
     public function delete(string $id, string $userId): int
     {
-        $sql = "DELETE FROM photos WHERE id = :id";
+        $sql = "DELETE FROM photos WHERE id = :id AND userId = :userId";
         $res = $this->conn->prepare($sql);
         $res->bindValue(":id", $id, PDO::PARAM_INT);
         $res->bindValue(":userId", $userId, PDO::PARAM_INT);

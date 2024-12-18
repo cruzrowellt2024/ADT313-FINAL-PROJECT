@@ -122,10 +122,16 @@ class AdminPhotosController
     {
         switch ($method) {
             case "GET":
-                echo json_encode($this->gateway->getAll());
+                $movieId = $_GET['movieId'] ?? null; 
+                if ($movieId) {
+                    echo json_encode($this->gateway->getAll($movieId)); 
+                } else {
+                    http_response_code(400);
+                    echo json_encode(["message" => "Movie ID is required"]);
+                }
                 break;
-
-            case "POST":
+    
+                case "POST":
                 $jsonData = (array) json_decode(file_get_contents("php://input"), true);
                 $data = $jsonData ? $jsonData : $_POST;
                 $type = $jsonData ? 'json' : 'form';

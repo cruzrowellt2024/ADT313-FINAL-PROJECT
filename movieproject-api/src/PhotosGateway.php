@@ -26,8 +26,8 @@ class PhotosGateway
 
     public function create(array $data): string
     {
-        $sql = "INSERT INTO photos (userId, movieId, url, description) 
-                VALUES (:userId, :movieId, :url, :description)";
+        $sql = "INSERT INTO photos (movieId, userId, url, description) 
+                VALUES (:movieId, :userId, :url, :description)";
         $res = $this->conn->prepare($sql);
 
         $res->bindValue(":userId",$data["userId"], PDO::PARAM_INT);
@@ -52,18 +52,16 @@ class PhotosGateway
 
     public function update(array $current, array $new): int
     {
-        // Ensure all necessary fields are present
-        $sql = "UPDATE photos SET movieId=:movieId, url=:url, description=:description, dateupdated=NOW() WHERE id=:id AND userId=:userId";
+        $sql = "UPDATE photos SET movieId=:movieId, userId=:userId, url=:url, description=:description WHERE id =:id AND userId = :userId";
         $res = $this->conn->prepare($sql);
-
-        // Bind values with proper fallbacks
-        $res->bindValue(":movieId", $new["movieId"] ?? $current["movieId"], PDO::PARAM_INT);
-        $res->bindValue(":url", isset($new["url"]) ? $new["url"] : $current["url"], PDO::PARAM_STR);
-        $res->bindValue(":description", isset($new["description"]) ? $new["description"] : $current["description"], PDO::PARAM_STR);
+        $dateUpdated = (new DateTime())->getTimeStamp();
+        $res->bindValue(":userId",$current["userId"], PDO::PARAM_INT);
+        $res->bindValue(":movieId",$new["movieId"] ?? $current["movieId"], PDO::PARAM_INT);
+        $res->bindValue(":url",$new["url"] ?? $current["url"], PDO::PARAM_STR);
+        $res->bindValue(":description",$new["description"] ?? $current["description"], PDO::PARAM_STR);
+        $res->bindValue(":dateUpdated",$dateUpdated, PDO::PARAM_STR);
         $res->bindValue(":id", $current["id"], PDO::PARAM_INT);
-        $res->bindValue(":userId", $current["userId"], PDO::PARAM_INT);
 
-        // Execute the query
         $res->execute();
 
         return $res->rowCount();
